@@ -1,4 +1,6 @@
 ### Bee-crontab
+[![GoDoc](https://godoc.org/github.com/sinksmell/bee-crontab?status.svg)](https://godoc.org/github.com/sinksmell/bee-crontab)
+
 > 基于go语言实现的一个分布式的任务调度系统,可以取代crontab
 
 * 可视化Web后台管理,配置定时任务方便
