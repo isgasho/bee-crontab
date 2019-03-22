@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 )
 
 type WorkerController struct {

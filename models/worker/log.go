@@ -2,7 +2,7 @@ package worker
 
 import (
 	"go.mongodb.org/mongo-driver/mongo"
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"context"
 	"time"

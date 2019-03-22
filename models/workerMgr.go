@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/astaxie/beego"
 	"context"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 	"go.etcd.io/etcd/mvcc/mvccpb"
 )
 

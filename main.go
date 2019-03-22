@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "bee-crontab/routers"
+	_ "github.com/sinksmell/bee-crontab/routers"
 
 	"github.com/astaxie/beego"
 )

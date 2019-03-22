@@ -4,9 +4,9 @@ import (
 	"go.etcd.io/etcd/clientv3"
 	"time"
 	"go.etcd.io/etcd/mvcc/mvccpb"
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 	"context"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 	"fmt"
 )
 

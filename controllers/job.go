@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"encoding/json"
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 )
 
 type JobController struct {

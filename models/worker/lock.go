@@ -3,7 +3,7 @@ package worker
 import (
 	"go.etcd.io/etcd/clientv3"
 	"context"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // 分布式锁

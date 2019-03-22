@@ -6,7 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"strings"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 	"fmt"
 )
 

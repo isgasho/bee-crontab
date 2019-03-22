@@ -4,7 +4,7 @@ import (
 	"go.etcd.io/etcd/clientv3"
 	"time"
 	"net"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 	"context"
 )
 

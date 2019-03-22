@@ -1,7 +1,7 @@
 package worker
 
 import (
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 	"os/exec"
 	"time"
 	"math/rand"

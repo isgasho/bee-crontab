@@ -1,0 +1,10 @@
+language: go
+
+go:
+- "1.11"
+- "1.11.x"
+
+sudo: required
+
+script:
+  - go get -v

@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"bee-crontab/controllers"
+	"github.com/sinksmell/bee-crontab/controllers"
 	"github.com/astaxie/beego"
 )
 

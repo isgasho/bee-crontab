@@ -6,7 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"encoding/json"
 	"context"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // 单例全局变量

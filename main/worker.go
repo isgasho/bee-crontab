@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bee-crontab/models/worker"
+	"github.com/sinksmell/bee-crontab/models/worker"
 	"fmt"
 	"time"
 )

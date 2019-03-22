@@ -1,10 +1,10 @@
 package worker
 
 import (
-	"bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models"
 	"time"
 	"fmt"
-	"bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // 调度器 用来调度worker工作
