@@ -5,8 +5,6 @@ import (
 	"time"
 	"context"
 	"encoding/json"
-	"strings"
-	"github.com/sinksmell/bee-crontab/models/common"
 	"fmt"
 )
 
@@ -83,17 +81,7 @@ func NewResponse(code int, msg string, data interface{}) Response {
 	return Response{code, msg, data}
 }
 
-// 反序列化得到Job
-func UnpackJob(value []byte) (ret *Job, err error) {
-	var (
-		job Job
-	)
-	if err = json.Unmarshal(value, &job); err != nil {
-		return
-	}
-	ret = &job
-	return
-}
+
 
 //构造任务变化时间
 func NewJobEvent(eType uint, job *Job) (*JobEvent) {
@@ -132,20 +120,6 @@ func NewJobExecInfo(plan *JobSchedulerPlan) (info *JobExecInfo) {
 	return
 }
 
-//从etcd key中提取出Job Name
-func ExtractJobName(key string) string {
-	return strings.TrimPrefix(key, common.JOB_SAVE_PATH)
-}
-
-//从etcd killer 的key中提取JobName
-func ExtractKillerName(key string) string {
-	return strings.TrimPrefix(key, common.JOB_KILLER_PATH)
-}
-
-// 从etcd /cron/worker/ip 中获取 worker 的ip
-func ExtarctWorkerIP(key string) string {
-	return strings.TrimPrefix(key, common.JOB_WORKER_PATH)
-}
 
 // jobEvent 的toString方法
 func (event *JobEvent) String() string {
