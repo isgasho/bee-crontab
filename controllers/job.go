@@ -30,7 +30,6 @@ func (c *JobController) Save() {
 		resp models.Response
 	)
 	json.Unmarshal(c.Ctx.Input.RequestBody, &job)
-	// beego.Error(job)
 	if oldJob, err := models.MJobManager.SaveJob(&job); err != nil {
 		resp = models.NewResponse(-1, err.Error(), nil)
 	} else {

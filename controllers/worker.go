@@ -9,9 +9,9 @@ type WorkerController struct {
 	beego.Controller
 }
 
-func (w *WorkerController) URLMapping() {
-	w.Mapping("List", w.List)
-}
+//func (w *WorkerController) URLMapping() {
+//	w.Mapping("List", w.List)
+//}
 
 // @Title List Workers Node
 // @Description get all of the workers ip

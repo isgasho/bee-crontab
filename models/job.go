@@ -68,12 +68,10 @@ func (jobMgr *MasterJobMgr) SaveJob(job *Job) (oldJob *Job, err error) {
 	if bytes, err = json.Marshal(job); err != nil {
 		return
 	}
-
 	// etcd put 操作
 	if putResp, err = MJobManager.kv.Put(context.TODO(), jobKey, string(bytes), clientv3.WithPrevKV()); err != nil {
 		return
 	}
-
 	// 如果prevKV 不为空则返回旧值
 	if putResp.PrevKv != nil {
 		if err = json.Unmarshal(putResp.PrevKv.Value, &oldJobObj); err != nil {
@@ -98,7 +96,6 @@ func (jobMgr *MasterJobMgr) DeleteJob(job *Job) (oldJob *Job, err error) {
 	)
 
 	jobKey = common.JOB_SAVE_PATH + job.Name
-
 	if delResp, err = MJobManager.kv.Delete(context.TODO(), jobKey, clientv3.WithPrevKV()); err != nil {
 		return
 	}

@@ -115,6 +115,13 @@
                         <label for="job_cron">cron表达式</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input id="job_to" type="text" name="command" v-model="jobForm.timeOut" class="validate">
+                        <label for="job_to">超时时间</label>
+                    </div>
+                </div>
+
             </form>
         </div>
 
@@ -174,7 +181,8 @@
                 jobForm: {
                     name: '',
                     command: '',
-                    cronExpr: ''
+                    cronExpr: '',
+                    timeOut:''
                 },
                 logData: [],
                 nodeData: [],
@@ -191,6 +199,7 @@
                 this.jobForm.name = row.name
                 this.jobForm.command = row.command
                 this.jobForm.cronExpr = row.cronExpr
+                this.jobForm.timeOut=row.timeOut
                 this.dialogVisible = true
             },
             handleRemove(index, row) {

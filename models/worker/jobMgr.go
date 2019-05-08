@@ -146,7 +146,6 @@ func (jobMgr *WorkerJobMgr) WatchJobs() (err error) {
 
 // 从etcd读取killer
 // 监听kv变化
-
 func (jobMgr *WorkerJobMgr) WatchKillers() (err error) {
 
 	// 监听 /cron/killer/ 目录的变化
@@ -161,12 +160,10 @@ func (jobMgr *WorkerJobMgr) WatchKillers() (err error) {
 		watchStartRevison int64
 	)
 
-
 	// 1.get /cron/jobs/ 下的所有任务,并获取当前revision
 	if getResp, err = jobMgr.kv.Get(context.TODO(), common.JOB_KILLER_PATH, clientv3.WithPrefix()); err != nil {
 		return
 	}
-
 	//从最新的revision之后监听变化
 	go func() {
 		watchStartRevison = getResp.Header.Revision
@@ -185,7 +182,6 @@ func (jobMgr *WorkerJobMgr) WatchKillers() (err error) {
 				case mvccpb.DELETE:
 					// killer 任务过期
 				}
-
 				// 变化推送给 scheduler
 				// scheduler得知后调用cancelFunc取消对应的任务执行
 			}

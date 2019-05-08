@@ -4,7 +4,6 @@ import (
 	"github.com/gorhill/cronexpr"
 	"time"
 	"context"
-	"encoding/json"
 	"fmt"
 )
 
@@ -13,6 +12,7 @@ type Job struct {
 	Name     string `json:"name"`
 	Command  string `json:"command"`
 	CronExpr string `json:"cronExpr"`
+	TimeOut  int    `json:"timeOut"`
 }
 
 //任务调度计划
@@ -37,6 +37,7 @@ type JobExecInfo struct {
 
 // 任务执行结果
 type JobExecResult struct {
+	Type     	int       // 结果类型 正常执行 kill 超时终止
 	ExecInfo  *JobExecInfo // 执行状态
 	Output    []byte       // 输出结果
 	Err       error        // 错误信息
@@ -81,8 +82,6 @@ func NewResponse(code int, msg string, data interface{}) Response {
 	return Response{code, msg, data}
 }
 
-
-
 //构造任务变化时间
 func NewJobEvent(eType uint, job *Job) (*JobEvent) {
 	return &JobEvent{eType, job}
@@ -120,7 +119,6 @@ func NewJobExecInfo(plan *JobSchedulerPlan) (info *JobExecInfo) {
 	return
 }
 
-
 // jobEvent 的toString方法
 func (event *JobEvent) String() string {
 	return fmt.Sprintf("%d %+v\n", event.EventType, *(event.Job))
@@ -136,8 +134,9 @@ func (event *JobEvent) String() string {
 */
 //JobExecResult的执行结果
 func (result *JobExecResult) String() string {
-	return fmt.Sprintf("JobName:%s\n Output:%s\n Err:%v",
+	return fmt.Sprintf("JobName:%s\tType: %d\n  Output:%s\n Err:%v",
 		result.ExecInfo.Job.Name,
+		result.Type,
 		string(result.Output),
 		result.Err)
 }

@@ -61,12 +61,10 @@ func (scheduler *Scheduler) DoScheduler() {
 			//任务处理结果传来
 			scheduler.HandleJobResult(result)
 		}
-
 		// 尝试下一次调度
 		duration = scheduler.TryScheduler()
 		// 重置定时器
 		timer.Reset(duration)
-
 	}
 
 }
