@@ -47,7 +47,7 @@
                     <el-table-column
                             prop="name"
                             label="任务名"
-                            width="200">
+                            width="100">
                     </el-table-column>
                     <el-table-column
                             prop="command"
@@ -55,9 +55,14 @@
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="cronExpr"
-                            label="cron表达式"
-                            width="200">
+                        prop="cronExpr"
+                        label="cron表达式"
+                        width="200">
+                </el-table-column>
+                    <el-table-column
+                            prop="timeOut"
+                            label="超时时间"
+                            width="100">
                     </el-table-column>
                     <el-table-column
                             label="操作"
@@ -111,13 +116,13 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s8">
-                        <input id="job_cron" type="text" name="command" v-model="jobForm.cronExpr" class="validate">
+                        <input id="job_cron" type="text" name="cronExpr" v-model="jobForm.cronExpr" class="validate">
                         <label for="job_cron">cron表达式</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s8">
-                        <input id="job_to" type="text" name="command" v-model="jobForm.timeOut" class="validate">
+                        <input id="job_to" type="number" name="timeOut" v-model="jobForm.timeOut" class="validate">
                         <label for="job_to">超时时间</label>
                     </div>
                 </div>
@@ -182,7 +187,7 @@
                     name: '',
                     command: '',
                     cronExpr: '',
-                    timeOut:''
+                    timeOut:0
                 },
                 logData: [],
                 nodeData: [],
@@ -270,6 +275,7 @@
                 })
             },
             createJob() {
+                console.log(this.jobForm.timeOut)
                 axios.post('/v1/job/save', this.jobForm).then(res => {
                     //   console.log(res.data)
                     this.clearForm()
@@ -295,6 +301,7 @@
                 this.jobForm.name = ''
                 this.jobForm.command = ''
                 this.jobForm.cronExpr = ''
+                this.jobForm.timeOut=0
             }
         },
         mounted() {

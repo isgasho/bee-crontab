@@ -1,15 +1,14 @@
 package worker
 
 import (
-	"go.etcd.io/etcd/clientv3"
-	"time"
-	"net"
-	"github.com/sinksmell/bee-crontab/models/common"
 	"context"
+	"github.com/sinksmell/bee-crontab/models/common"
+	"go.etcd.io/etcd/clientv3"
+	"net"
+	"time"
 )
 
-// 服务注册
-// 注册节点到etcd
+// Register 服务注册 注册节点到etcd
 type Register struct {
 	client *clientv3.Client
 	kv     clientv3.KV
@@ -18,9 +17,11 @@ type Register struct {
 }
 
 var (
-	Worker_Register *Register
+	// WorkerRegister worker节点服务注册单例
+	WorkerRegister *Register
 )
 
+// InitRegister  初始化服务注册单例
 func InitRegister() (err error) {
 
 	var (
@@ -51,24 +52,24 @@ func InitRegister() (err error) {
 	}
 
 	// 初始化单例
-	Worker_Register = &Register{
+	WorkerRegister = &Register{
 		client: client,
 		kv:     kv,
 		lease:  lease,
 		ip:     ip,
 	}
 
-	go Worker_Register.keepOnline()
+	go WorkerRegister.keepOnline()
 
 	return
 }
 
-// 注册ip到 /cron/workers/Ip 并自动续租
+// 注册ip到 /cron/workers/IP 并自动续租
 func (register *Register) keepOnline() {
 	var (
 		key          string
 		leaseResp    *clientv3.LeaseGrantResponse
-		leaseId      clientv3.LeaseID
+		leaseID      clientv3.LeaseID
 		ctx          context.Context
 		cancelFunc   context.CancelFunc
 		keepRespChan <-chan *clientv3.LeaseKeepAliveResponse
@@ -79,7 +80,7 @@ func (register *Register) keepOnline() {
 		var (
 			keepResp *clientv3.LeaseKeepAliveResponse
 		)
-		// TODO : 续租应答协程
+		//  续租应答协程
 		// 当通道被关闭时 程序协程自动退出
 		for keepResp = range keepRespChan {
 			if keepResp == nil {
@@ -93,10 +94,8 @@ func (register *Register) keepOnline() {
 	key = common.JOB_WORKER_PATH + register.ip
 
 	for {
-
 		// 初始化上下文取消函数
 		ctx, cancelFunc = context.WithCancel(context.TODO())
-
 		// 创建租约
 		if leaseResp, err = register.lease.Grant(context.TODO(), 10); err != nil {
 			// 一段时间后重新尝试创建租约
@@ -104,14 +103,13 @@ func (register *Register) keepOnline() {
 		}
 
 		// 自动续租
-		leaseId = leaseResp.ID
-		if keepRespChan, err = register.lease.KeepAlive(ctx, leaseId); err != nil {
+		leaseID = leaseResp.ID
+		if keepRespChan, err = register.lease.KeepAlive(ctx, leaseID); err != nil {
 			goto RETRY
-			//
 		}
 
 		// 注册到etcd
-		if _, err = register.kv.Put(ctx, key, "running", clientv3.WithLease(leaseId)); err != nil {
+		if _, err = register.kv.Put(ctx, key, "running", clientv3.WithLease(leaseID)); err != nil {
 			goto RETRY
 		}
 
@@ -123,7 +121,7 @@ func (register *Register) keepOnline() {
 
 }
 
-// 获取本地ip
+// GetLocalIP 获取本地ip
 func GetLocalIP() (ipv4 string, err error) {
 	var (
 		addrs []net.Addr

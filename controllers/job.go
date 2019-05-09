@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"encoding/json"
+	"github.com/astaxie/beego"
 	"github.com/sinksmell/bee-crontab/models"
 )
 
@@ -10,13 +10,13 @@ type JobController struct {
 	beego.Controller
 }
 
-func (c *JobController) URLMapping() {
-	c.Mapping("Save", c.Save)     // update or create job
-	c.Mapping("Delete", c.Delete) // delete job
-	c.Mapping("List", c.List)     // get all of the jobs
-	c.Mapping("Kill", c.Kill)     // kill job
-	c.Mapping("Log", c.Log)
-}
+//func (c *JobController) URLMapping() {
+//	c.Mapping("Save", c.Save)     // update or create job
+//	c.Mapping("Delete", c.Delete) // delete job
+//	c.Mapping("List", c.List)     // get all of the jobs
+//	c.Mapping("Kill", c.Kill)     // kill job
+//	c.Mapping("Log", c.Log)
+//}
 
 // @Title SaveJob
 // @Description create jobs or update jobs
@@ -107,7 +107,7 @@ func (c *JobController) Kill() {
 // @router /log/:name [get]
 func (c *JobController) Log() {
 	var (
-		logs []*models.HttpJobLog
+		logs []*models.HTTPJobLog
 		resp models.Response
 		err  error
 	)

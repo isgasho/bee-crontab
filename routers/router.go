@@ -8,8 +8,8 @@
 package routers
 
 import (
-	"github.com/sinksmell/bee-crontab/controllers"
 	"github.com/astaxie/beego"
+	"github.com/sinksmell/bee-crontab/controllers"
 )
 
 func init() {

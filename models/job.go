@@ -1,21 +1,20 @@
 package models
 
 import (
+	"context"
+	"encoding/json"
+	"github.com/astaxie/beego"
+	"github.com/sinksmell/bee-crontab/models/common"
 	"go.etcd.io/etcd/clientv3"
 	"time"
-	"github.com/astaxie/beego"
-	"encoding/json"
-	"context"
-	"github.com/sinksmell/bee-crontab/models/common"
 )
 
-// 单例全局变量
-
 var (
+	// MJobManager master 任务管理器 单例全局变量
 	MJobManager *MasterJobMgr
 )
 
-// 任务管理器
+// MasterJobMgr  任务管理器
 type MasterJobMgr struct {
 	client *clientv3.Client
 	kv     clientv3.KV
@@ -53,7 +52,7 @@ func init() {
 
 }
 
-// 添加或者修改一个任务
+// SaveJob 添加或者修改一个任务
 func (jobMgr *MasterJobMgr) SaveJob(job *Job) (oldJob *Job, err error) {
 
 	var (
@@ -86,7 +85,7 @@ func (jobMgr *MasterJobMgr) SaveJob(job *Job) (oldJob *Job, err error) {
 	return
 }
 
-// 删除一个任务
+// DeleteJob 删除一个任务
 func (jobMgr *MasterJobMgr) DeleteJob(job *Job) (oldJob *Job, err error) {
 
 	var (
@@ -111,7 +110,7 @@ func (jobMgr *MasterJobMgr) DeleteJob(job *Job) (oldJob *Job, err error) {
 	return
 }
 
-//获取所有的任务
+// ListJobs 获取所有的任务
 func (jobMgr *MasterJobMgr) ListJobs() (jobs []*Job, err error) {
 	var (
 		jobKey  string
@@ -140,14 +139,12 @@ func (jobMgr *MasterJobMgr) ListJobs() (jobs []*Job, err error) {
 	return
 }
 
-// 杀死一个任务
-// 向 /cron/killer/JobName put 一个值
-// worker监听变化,强行终止对应的任务
+// KillJob  杀死一个任务 向 /cron/killer/JobName put 一个值 worker监听变化,强行终止对应的任务
 func (jobMgr *MasterJobMgr) KillJob(job *Job) (err error) {
 
 	var (
-		killJobKey  = common.JOB_KILLER_PATH + job.Name
-		leaseId    clientv3.LeaseID
+		killJobKey = common.JOB_KILLER_PATH + job.Name
+		leaseID    clientv3.LeaseID
 		grantResp  *clientv3.LeaseGrantResponse
 	)
 
@@ -156,14 +153,12 @@ func (jobMgr *MasterJobMgr) KillJob(job *Job) (err error) {
 		return
 	}
 
-	leaseId = grantResp.ID
+	leaseID = grantResp.ID
 	// 向 /cron/killer/JobName put "kill" 表示杀死对应的任务
 	// 租约到期自动删除对应的 k-v
-	if _, err = jobMgr.kv.Put(context.TODO(), killJobKey, "kill", clientv3.WithLease(leaseId)); err != nil {
+	if _, err = jobMgr.kv.Put(context.TODO(), killJobKey, "kill", clientv3.WithLease(leaseID)); err != nil {
 		return
 	}
 
 	return
 }
-
-

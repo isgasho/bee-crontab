@@ -1,36 +1,38 @@
 package worker
 
 import (
-	"io/ioutil"
-	"github.com/segmentio/objconv/json"
 	"fmt"
+	"github.com/segmentio/objconv/json"
+	"io/ioutil"
 )
 
-type  WorkerConfig  struct{
-	EtcdEndponits []string `json:"etcdEndponits"`
-	EtcdDialTimeout int `json:"etcdDialTimeout"`
+// WorkerConfig  Worker节点的配置结构
+type WorkerConfig struct {
+	EtcdEndponits   []string `json:"etcdEndponits"`
+	EtcdDialTimeout int      `json:"etcdDialTimeout"`
 }
 
-var(
+var (
+	// WorkerConf Worker的全局配置单例
 	WorkerConf *WorkerConfig
 )
 
-// 解析配置文件
-func InitConfig(filename string)(err error){
-	var(
+// InitConfig 解析Worker配置文件
+func InitConfig(filename string) (err error) {
+	var (
 		content []byte
-		config WorkerConfig
+		config  WorkerConfig
 	)
 
 	// 读取文件
-	if content,err=ioutil.ReadFile(filename);err!=nil{
+	if content, err = ioutil.ReadFile(filename); err != nil {
 		return
 	}
 	// 解析json
-	if err=json.Unmarshal(content,&config);err!=nil{
+	if err = json.Unmarshal(content, &config); err != nil {
 		return
 	}
-	WorkerConf=&config
-	fmt.Printf("%+v\n",WorkerConf)
+	WorkerConf = &config
+	fmt.Printf("%+v\n", WorkerConf)
 	return
 }

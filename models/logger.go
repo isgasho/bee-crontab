@@ -1,22 +1,21 @@
 package models
 
 import (
-	"time"
-	"go.mongodb.org/mongo-driver/mongo"
 	"context"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
-// 日志管理器
+// MasterLogger  master日志管理器
 type MasterLogger struct {
 	client     *mongo.Client
 	collection *mongo.Collection
 }
 
+// HTTPJobLog 任务执行日志
 // 解析为标准时间的日志结构体
-
-// 任务执行日志
-type HttpJobLog struct {
+type HTTPJobLog struct {
 	JobName      string ` json:"jobName" `     //任务名
 	Command      string ` json:"command" `     //执行命令
 	Err          string `json:"err" `          //错误信息
@@ -28,7 +27,8 @@ type HttpJobLog struct {
 }
 
 var (
-	Master_Logger *MasterLogger
+	// MLogger master节点任务管理器单例
+	MLogger *MasterLogger
 )
 
 // 初始化
@@ -43,11 +43,9 @@ func init() {
 	if err = client.Connect(ctx); err != nil {
 		return
 	}
-
 	collection = client.Database("cron").Collection("log")
-
 	// 初始化
-	Master_Logger = &MasterLogger{
+	MLogger = &MasterLogger{
 		client:     client,
 		collection: collection,
 	}
@@ -55,36 +53,31 @@ func init() {
 	return
 }
 
-// 读取任务的执行日志
-func ReadLog(jobName string) (logs []*HttpJobLog, err error) {
+// ReadLog 读取任务的执行日志
+func ReadLog(jobName string) (logs []*HTTPJobLog, err error) {
 
 	var (
 		log     *JobExecLog
-		httpLog *HttpJobLog
+		httpLog *HTTPJobLog
 		cursor  *mongo.Cursor
 		findOps *options.FindOptions
 		filter  *JobFilter
 	)
 
 	// 初始化返回结果 防止出现空指针
-	logs = make([]*HttpJobLog, 0)
-
+	logs = make([]*HTTPJobLog, 0)
 	// 查找时的选项
 	findOps = options.Find()
 	findOps.SetLimit(20)
-
 	// 设置过滤器即查找条件
 	filter = &JobFilter{
 		jobName,
 	}
-
-	if cursor, err = Master_Logger.collection.Find(context.TODO(), filter, findOps); err != nil {
+	if cursor, err = MLogger.collection.Find(context.TODO(), filter, findOps); err != nil {
 		return
 	}
-
 	// 延迟释放游标
 	defer cursor.Close(context.TODO())
-
 	// 遍历游标
 	for cursor.Next(context.TODO()) {
 		log = &JobExecLog{}
@@ -98,15 +91,14 @@ func ReadLog(jobName string) (logs []*HttpJobLog, err error) {
 	return
 }
 
-func parseLog(jobLog *JobExecLog) (httpLog *HttpJobLog) {
+func parseLog(jobLog *JobExecLog) (httpLog *HTTPJobLog) {
 
-
-	httpLog = &HttpJobLog{}
+	// 构造http响应的log
+	httpLog = &HTTPJobLog{}
 	httpLog.JobName = jobLog.JobName
 	httpLog.Command = jobLog.Command
 	httpLog.Err = jobLog.Err
 	httpLog.Output = jobLog.Output
-
 	// 时间戳转换为时间类型
 	// time.Unix (seconds,nanoseconds)
 	// 要么传入秒 要么传入纳秒

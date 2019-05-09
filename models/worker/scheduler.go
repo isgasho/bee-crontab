@@ -1,13 +1,13 @@
 package worker
 
 import (
-	"github.com/sinksmell/bee-crontab/models"
-	"time"
 	"fmt"
+	"github.com/sinksmell/bee-crontab/models"
 	"github.com/sinksmell/bee-crontab/models/common"
+	"time"
 )
 
-// 调度器 用来调度worker工作
+// Scheduler 调度器 用来调度worker工作
 type Scheduler struct {
 	JobEventChan      chan *models.JobEvent               // 任务事件管道
 	JobPlanTable      map[string]*models.JobSchedulerPlan // 任务计划表
@@ -16,13 +16,14 @@ type Scheduler struct {
 }
 
 var (
-	Bee_Scheduler *Scheduler
+	// BeeScheduler worker调度器单例
+	BeeScheduler *Scheduler
 )
 
-// 初始化
+// InitScheduler 初始化调度器单例
 func InitScheduler() (err error) {
 
-	Bee_Scheduler = &Scheduler{
+	BeeScheduler = &Scheduler{
 		JobEventChan:      make(chan *models.JobEvent, 1000),
 		JobPlanTable:      make(map[string]*models.JobSchedulerPlan),
 		JobExecTable:      make(map[string]*models.JobExecInfo),
@@ -30,12 +31,12 @@ func InitScheduler() (err error) {
 	}
 
 	// 启动调度器协程
-	go Bee_Scheduler.DoScheduler()
+	go BeeScheduler.DoScheduler()
 
 	return
 }
 
-// 调度监听
+// DoScheduler 调度监听
 func (scheduler *Scheduler) DoScheduler() {
 	var (
 		event    *models.JobEvent      // 任务事件
@@ -48,7 +49,8 @@ func (scheduler *Scheduler) DoScheduler() {
 	duration = scheduler.TryScheduler()
 	// 调度定时器
 	timer = time.NewTimer(duration)
-
+	// 这里可以让调度器精准睡眠一会
+	time.Sleep(duration)
 	// 调度循环
 	for {
 		select {
@@ -69,7 +71,7 @@ func (scheduler *Scheduler) DoScheduler() {
 
 }
 
-// 尝试调度 返回距离最近到期任务的时间间隔
+// TryScheduler 尝试调度 返回距离最近到期任务的时间间隔
 func (scheduler *Scheduler) TryScheduler() (duration time.Duration) {
 	var (
 		plan *models.JobSchedulerPlan // 任务计划表
@@ -106,7 +108,7 @@ func (scheduler *Scheduler) TryScheduler() (duration time.Duration) {
 	return
 }
 
-// 尝试执行
+// TryRunJob 尝试执行任务
 func (scheduler *Scheduler) TryRunJob(plan *models.JobSchedulerPlan) {
 	// 调度与执行是两码事
 	// 例如 每5秒钟调度一次 但是执行一次需要一分钟
@@ -128,17 +130,15 @@ func (scheduler *Scheduler) TryRunJob(plan *models.JobSchedulerPlan) {
 	// 保存到运行表
 	scheduler.JobExecTable[plan.Job.Name] = info
 	// 执行任务
-	// TODO : 执行器执行任务
-	//fmt.Println("执行任务 ",plan.Job.Name)
-	Bee_Cron_Executor.ExecuteJob(info)
+	BeeCronExecutor.ExecuteJob(info)
 }
 
-// 推送任务变化事件
+// PushJobEvent 推送任务变化事件
 func (scheduler *Scheduler) PushJobEvent(event *models.JobEvent) {
 	scheduler.JobEventChan <- event
 }
 
-// 处理任务变化事件
+// HandleJobEvent 处理任务变化事件
 func (scheduler *Scheduler) HandleJobEvent(event *models.JobEvent) {
 
 	var (
@@ -176,17 +176,17 @@ func (scheduler *Scheduler) HandleJobEvent(event *models.JobEvent) {
 
 }
 
-// 接收任务执行结果
+// PushJobResult 推送任务执行结果
 func (scheduler *Scheduler) PushJobResult(result *models.JobExecResult) {
 	scheduler.JobExecResultChan <- result
 }
 
-// 处理任务执行结果
+// HandleJobResult 处理任务执行结果
 func (scheduler *Scheduler) HandleJobResult(result *models.JobExecResult) {
 
 	var (
 		log   *models.JobExecLog
-		shift int64= 1000000
+		shift int64 = 1000000
 	)
 
 	// 从执行表中删除对应的任务
@@ -197,10 +197,10 @@ func (scheduler *Scheduler) HandleJobResult(result *models.JobExecResult) {
 		JobName:      result.ExecInfo.Job.Name,
 		Command:      result.ExecInfo.Job.Command,
 		Output:       string(result.Output),
-		PlanTime:     result.ExecInfo.PlanTime.UnixNano()/shift,
-		ScheduleTime: result.ExecInfo.RealTime.UnixNano()/shift,
-		StartTime:    result.StartTime.UnixNano()/shift,
-		EndTime:      result.EndTime.UnixNano()/shift,
+		PlanTime:     result.ExecInfo.PlanTime.UnixNano() / shift,
+		ScheduleTime: result.ExecInfo.RealTime.UnixNano() / shift,
+		StartTime:    result.StartTime.UnixNano() / shift,
+		EndTime:      result.EndTime.UnixNano() / shift,
 	}
 	// 错误要单独判断是否为空
 	if result.Err != nil {
@@ -208,7 +208,7 @@ func (scheduler *Scheduler) HandleJobResult(result *models.JobExecResult) {
 	} else {
 		log.Err = "OK"
 	}
-	Bee_Cron_Logger.logChan <- log
+	BeeCronLogger.logChan <- log
 	fmt.Println("任务执行完成: ")
 	fmt.Println(result)
 }

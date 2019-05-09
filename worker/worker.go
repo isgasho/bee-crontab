@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sinksmell/bee-crontab/models/worker"
 	"fmt"
+	"github.com/sinksmell/bee-crontab/models/worker"
 	"time"
 )
 

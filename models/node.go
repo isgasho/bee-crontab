@@ -1,15 +1,15 @@
 package models
 
 import (
-	"go.etcd.io/etcd/clientv3"
-	"time"
-	"github.com/astaxie/beego"
 	"context"
+	"github.com/astaxie/beego"
 	"github.com/sinksmell/bee-crontab/models/common"
+	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/mvcc/mvccpb"
+	"time"
 )
 
-// worker管理 用来发现worker
+// WorkerMgr  worker管理 用来发现worker
 // /cron/worker/
 type WorkerMgr struct {
 	client *clientv3.Client
@@ -17,14 +17,15 @@ type WorkerMgr struct {
 	lease  clientv3.Lease
 }
 
-// 为了使获取节点列表 得到的信息更加丰富 而不是单纯的ip
-// 从而添加的描述节点状态的结构体
+// WorkerInfo 为了使获取节点列表 得到的信息更加丰富 而不是单纯的ip
+// 从而添加的描述节点状态的结构体 方便之后拓展
 type WorkerInfo struct {
 	Time string `json:"time"` // 查询时间
-	Ip   string `json:"ip"`   // 节点ip
+	IP   string `json:"ip"`   // 节点ip
 }
 
 var (
+	// WorkerManager master用来查看worker 信息的全局单例
 	WorkerManager *WorkerMgr
 )
 
@@ -32,6 +33,7 @@ func init() {
 	InitWorkerMgr()
 }
 
+// InitWorkerMgr  初始化全局单例
 func InitWorkerMgr() (err error) {
 	var (
 		config clientv3.Config
@@ -62,6 +64,7 @@ func InitWorkerMgr() (err error) {
 	return
 }
 
+// ListWorkers 获取worker节点的列表
 func (workerMgr *WorkerMgr) ListWorkers() (workers []*WorkerInfo, err error) {
 
 	var (
@@ -81,9 +84,8 @@ func (workerMgr *WorkerMgr) ListWorkers() (workers []*WorkerInfo, err error) {
 	for _, kvPair = range getResp.Kvs {
 		ip = ExtarctWorkerIP(string(kvPair.Key))
 		if len(ip) != 0 {
-			info = &WorkerInfo{Ip: ip,
-			}
-			info.Time=time.Now().Format("2006-01-02 15:04:05")
+			info = &WorkerInfo{IP: ip}
+			info.Time = time.Now().Format("2006-01-02 15:04:05")
 			workers = append(workers, info)
 		}
 	}
