@@ -29,9 +29,9 @@ func init() {
 		lease  clientv3.Lease
 		err    error
 	)
-
+	url:=beego.AppConfig.String("etcdURL")
 	config = clientv3.Config{
-		Endpoints:   []string{"127.0.0.1:2379"},
+		Endpoints:   []string{url},
 		DialTimeout: 5 * time.Second,
 	}
 

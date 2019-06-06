@@ -27,7 +27,7 @@ func InitLogger() (err error) {
 		client     *mongo.Client
 		collection *mongo.Collection
 	)
-	client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err = mongo.NewClient(options.Client().ApplyURI(WorkerConf.MongoURL))
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	if err = client.Connect(ctx); err != nil {
 		return

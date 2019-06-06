@@ -5,6 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
+	"github.com/astaxie/beego"
 )
 
 // MasterLogger  master日志管理器
@@ -38,7 +39,8 @@ func init() {
 		collection *mongo.Collection
 		err        error
 	)
-	client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
+	mongoUrl := beego.AppConfig.String("mongoURL")
+	client, err = mongo.NewClient(options.Client().ApplyURI(mongoUrl))
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	if err = client.Connect(ctx); err != nil {
 		return

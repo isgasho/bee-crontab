@@ -10,6 +10,7 @@ import (
 type WorkerConfig struct {
 	EtcdEndponits   []string `json:"etcdEndponits"`
 	EtcdDialTimeout int      `json:"etcdDialTimeout"`
+	MongoURL	string	`json:"mongo_url"`
 }
 
 var (
