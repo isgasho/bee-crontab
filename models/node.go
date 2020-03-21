@@ -2,11 +2,12 @@ package models
 
 import (
 	"context"
-	"github.com/astaxie/beego"
-	"github.com/sinksmell/bee-crontab/models/common"
-	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/mvcc/mvccpb"
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // WorkerMgr  worker管理 用来发现worker
@@ -41,7 +42,7 @@ func InitWorkerMgr() (err error) {
 		kv     clientv3.KV
 		lease  clientv3.Lease
 	)
-	url:=beego.AppConfig.String("etcdURL")
+	url := beego.AppConfig.String("etcdURL")
 	config = clientv3.Config{
 		Endpoints:   []string{url},
 		DialTimeout: 5 * time.Second,

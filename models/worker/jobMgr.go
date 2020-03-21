@@ -3,11 +3,12 @@ package worker
 import (
 	"context"
 	"fmt"
+	"time"
+
+	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
 	"github.com/sinksmell/bee-crontab/models"
 	"github.com/sinksmell/bee-crontab/models/common"
-	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/mvcc/mvccpb"
-	"time"
 )
 
 // WorkerJobMgr worker 任务管理器

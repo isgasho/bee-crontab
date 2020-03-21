@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/common/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/errors.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +29,34 @@
       <replace>/static</replace>
     </replaceStrings>
   </component>
-  <component name="GOROOT" path="/usr/local/go" />
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.13/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1584776374" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="refactor/mod" />
+                    <option name="lastUsedInstant" value="1584776373" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="ProjectId" id="1ZQeegtYwHmbp8fb7gRNyDQLdKV" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -49,7 +77,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="go.sdk" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -65,6 +93,15 @@
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build worker.go ">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="bee-crontab" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build worker.go " type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="bee-crontab" />
       <working_directory value="$PROJECT_DIR$/worker" />
@@ -83,6 +120,16 @@
       <filePath value="$PROJECT_DIR$/worker.go" />
       <package value="bee-crontab" />
       <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="bee-crontab" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
     <list>
@@ -117,9 +164,9 @@
     <proxy>https://goproxy.cn,direct</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state x="192" y="23" key="SettingsEditor" timestamp="1584776134295">
+    <state x="192" y="23" key="SettingsEditor" timestamp="1584776687320">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="192" y="23" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1584776134295" />
+    <state x="192" y="23" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1584776687320" />
   </component>
 </project>

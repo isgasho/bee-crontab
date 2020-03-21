@@ -2,10 +2,11 @@ package worker
 
 import (
 	"context"
-	"github.com/sinksmell/bee-crontab/models/common"
-	"go.etcd.io/etcd/clientv3"
 	"net"
 	"time"
+
+	"github.com/coreos/etcd/clientv3"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // Register 服务注册 注册节点到etcd

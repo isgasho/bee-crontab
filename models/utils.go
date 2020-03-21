@@ -2,8 +2,9 @@ package models
 
 import (
 	"encoding/json"
-	"github.com/sinksmell/bee-crontab/models/common"
 	"strings"
+
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // ExtractJobName 从etcd key中提取出Job Name

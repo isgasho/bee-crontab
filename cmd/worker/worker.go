@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/sinksmell/bee-crontab/models/worker"
 	"time"
+
+	"github.com/sinksmell/bee-crontab/models/worker"
 )
 
 func main() {

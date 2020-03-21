@@ -1,12 +1,13 @@
 package worker
 
 import (
-	"github.com/sinksmell/bee-crontab/models"
-	"github.com/sinksmell/bee-crontab/models/common"
 	"math/rand"
 	"os/exec"
 	"strconv"
 	"time"
+
+	"github.com/sinksmell/bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // Executor 用于执行shell命令的执行器

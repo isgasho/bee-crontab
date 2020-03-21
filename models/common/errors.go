@@ -1,6 +1,6 @@
 package common
 
-import "github.com/pkg/errors"
+import "errors"
 
 var (
 	ERR_LOCK_BUSY   = errors.New("锁被占用!")

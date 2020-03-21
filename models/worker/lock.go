@@ -2,8 +2,9 @@ package worker
 
 import (
 	"context"
+
+	"github.com/coreos/etcd/clientv3"
 	"github.com/sinksmell/bee-crontab/models/common"
-	"go.etcd.io/etcd/clientv3"
 )
 
 // JobLock etcd分布式锁 基于txn事务

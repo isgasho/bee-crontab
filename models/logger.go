@@ -2,10 +2,11 @@ package models
 
 import (
 	"context"
+	"time"
+
+	"github.com/astaxie/beego"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
-	"github.com/astaxie/beego"
 )
 
 // MasterLogger  master日志管理器

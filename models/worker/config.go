@@ -1,8 +1,8 @@
 package worker
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/segmentio/objconv/json"
 	"io/ioutil"
 )
 
@@ -10,7 +10,7 @@ import (
 type WorkerConfig struct {
 	EtcdEndponits   []string `json:"etcdEndponits"`
 	EtcdDialTimeout int      `json:"etcdDialTimeout"`
-	MongoURL	string	`json:"mongo_url"`
+	MongoURL        string   `json:"mongo_url"`
 }
 
 var (

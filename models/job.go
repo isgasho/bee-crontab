@@ -3,10 +3,11 @@ package models
 import (
 	"context"
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/sinksmell/bee-crontab/models/common"
-	"go.etcd.io/etcd/clientv3"
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/coreos/etcd/clientv3"
+	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 var (
@@ -29,7 +30,7 @@ func init() {
 		lease  clientv3.Lease
 		err    error
 	)
-	url:=beego.AppConfig.String("etcdURL")
+	url := beego.AppConfig.String("etcdURL")
 	config = clientv3.Config{
 		Endpoints:   []string{url},
 		DialTimeout: 5 * time.Second,
