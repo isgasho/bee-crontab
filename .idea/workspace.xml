@@ -2,10 +2,67 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/build/master/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/worker/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/version/version.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/common/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/errors.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/bee-crontab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/conf/app.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/font.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/fonts/element-icons.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/fonts/element-icons.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/fonts/element-icons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/fonts/element-icons.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/material-icons.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/css/materialize.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Bold.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Light.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Light.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Light.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Light.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Medium.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Medium.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Medium.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Regular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Thin.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Thin.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Thin.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/fonts/roboto/Roboto-Thin.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/js/axios.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/js/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/js/jquery-2.1.1.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/js/materialize.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/static/js/vue.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/favicon-32x32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/oauth2-redirect.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui-bundle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui-bundle.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui-standalone-preset.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui-standalone-preset.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger-ui.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/swagger/swagger.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/master/views/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/worker/worker" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/linux64/worker/worker.json" beforeDir="false" afterPath="$PROJECT_DIR$/conf/worker.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/worker/worker.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,15 +78,7 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>../static</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>/static</replace>
-    </replaceStrings>
-  </component>
-  <component name="GOROOT" path="/usr/local/Cellar/go/1.13/libexec" />
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.14/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -80,16 +129,16 @@
     <property name="settings.editor.selected.configurable" value="go.sdk" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/static/fonts" />
-      <recent name="$PROJECT_DIR$/bin/linux64/worker" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/conf" />
       <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$/bin/linux64/worker" />
       <recent name="$PROJECT_DIR$/main" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/master" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/fonts" />
+      <recent name="$PROJECT_DIR$/bin/linux64/worker" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build worker.go ">
@@ -164,6 +213,10 @@
     <proxy>https://goproxy.cn,direct</proxy>
   </component>
   <component name="WindowStateProjectService">
+    <state x="283" y="60" key="#GOROOT" timestamp="1584851708070">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="283" y="60" key="#GOROOT/0.0.1366.768@0.0.1366.768" timestamp="1584851708070" />
     <state x="192" y="23" key="SettingsEditor" timestamp="1584776687320">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

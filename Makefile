@@ -1,48 +1,26 @@
-# Copyright 2019 The Caicloud Authors.
-#
-# The old school Makefile, following are required targets. The Makefile is written
-# to allow building multiple binaries. You are free to add more targets or change
-# existing implementations, as long as the semantics are preserved.
-#
-#   make              - default to 'build' target
-#   make lint         - code analysis
-#   make test         - run unit test (or plus integration test)
-#   make build        - alias to build-local target
-#   make build-local  - build local binary targets
-#   make build-linux  - build linux binary targets
-#   make container    - build containers
-#   $ docker login registry -u username -p xxxxx
-#   make push         - push containers
-#   make clean        - clean up targets
-#
-# Not included but recommended targets:
-#   make e2e-test
-#
-# The makefile is also responsible to populate project version information.
-#
-
 #
 # Tweak the variables based on your project.
 #
 
 # This repo's root import path (under GOPATH).
-ROOT := github.com/caicloud/golang-template-project
+ROOT := github.com/sinksmell/bee-crontab
 
 # Target binaries. You can build multiple binaries for a single project.
-TARGETS := admin controller
+TARGETS := master worker
 
 # Container image prefix and suffix added to targets.
 # The final built images are:
 #   $[REGISTRY]/$[IMAGE_PREFIX]$[TARGET]$[IMAGE_SUFFIX]:$[VERSION]
 # $[REGISTRY] is an item from $[REGISTRIES], $[TARGET] is an item from $[TARGETS].
-IMAGE_PREFIX ?= $(strip template-)
+IMAGE_PREFIX ?= $(strip bee-crontab-)
 IMAGE_SUFFIX ?= $(strip )
 
 # Container registries.
-REGISTRY ?= cargo.dev.caicloud.xyz/release
+# set your dockerhub username or docker registry url
+REGISTRY ?= destory
 
 # Container registry for base images.
-BASE_REGISTRY ?= https://0c7swsv7.mirror.aliyuncs.com
+BASE_REGISTRY ?= 0c7swsv7.mirror.aliyuncs.com/library
 
 #
 # These variables should not need tweaking.
@@ -97,7 +75,7 @@ test:
 build-local:
 	@for target in $(TARGETS); do                                                      \
 	  go build -i -v -o $(OUTPUT_DIR)/$${target} -p $(CPUS)                            \
-	  -ldflags "-s -w -X $(ROOT)/pkg/version.VERSION=$(VERSION)"                        \                                       \
+	  -ldflags "-s -w -X $(ROOT)/version.VERSION=$(VERSION)"																	\
 	  $(CMD_DIR)/$${target};                                                           \
 	done
 
@@ -107,12 +85,12 @@ build-linux:
 	  -w /go/src/$(ROOT)                                                               \
 	  -e GOOS=linux                                                                    \
 	  -e GOARCH=amd64                                                                  \
-	  -e GOPATH=/go                                                                    \
-	  $(BASE_REGISTRY)/golang:1.12.9-stretch                                           \
+	  -e GO111MODULE=on                                                                    \
+	  -e GOPROXY=https://goproxy.cn,direct                                                                    \
+	  $(BASE_REGISTRY)/golang:1.13-stretch                                           \
 	    /bin/bash -c 'for target in $(TARGETS); do                                     \
 	      go build -i -v -o $(OUTPUT_DIR)/$${target} -p $(CPUS)                        \
-	        -ldflags "-s -w -X $(ROOT)/pkg/version.VERSION=$(VERSION)                  \
-	          -X $(ROOT)/pkg/version.REPOROOT=$(ROOT)"                                 \
+	        -ldflags "-s -w -X $(ROOT)/version.VERSION=$(VERSION)"                                 \
 	        $(CMD_DIR)/$${target};                                                     \
 	    done'
 
