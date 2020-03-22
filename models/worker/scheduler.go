@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sinksmell/bee-crontab/models"
 	"github.com/sinksmell/bee-crontab/models/common"
 )
 
 // Scheduler 调度器 用来调度worker工作
 type Scheduler struct {
-	JobEventChan      chan *models.JobEvent               // 任务事件管道
-	JobPlanTable      map[string]*models.JobSchedulerPlan // 任务计划表
-	JobExecTable      map[string]*models.JobExecInfo      // 正在执行的任务
-	JobExecResultChan chan *models.JobExecResult          // 任务执行结果
+	JobEventChan      chan *common.JobEvent               // 任务事件管道
+	JobPlanTable      map[string]*common.JobSchedulerPlan // 任务计划表
+	JobExecTable      map[string]*common.JobExecInfo      // 正在执行的任务
+	JobExecResultChan chan *common.JobExecResult          // 任务执行结果
 }
 
 var (
@@ -25,10 +24,10 @@ var (
 func InitScheduler() (err error) {
 
 	BeeScheduler = &Scheduler{
-		JobEventChan:      make(chan *models.JobEvent, 1000),
-		JobPlanTable:      make(map[string]*models.JobSchedulerPlan),
-		JobExecTable:      make(map[string]*models.JobExecInfo),
-		JobExecResultChan: make(chan *models.JobExecResult, 1000),
+		JobEventChan:      make(chan *common.JobEvent, 1000),
+		JobPlanTable:      make(map[string]*common.JobSchedulerPlan),
+		JobExecTable:      make(map[string]*common.JobExecInfo),
+		JobExecResultChan: make(chan *common.JobExecResult, 1000),
 	}
 
 	// 启动调度器协程
@@ -40,10 +39,10 @@ func InitScheduler() (err error) {
 // DoScheduler 调度监听
 func (scheduler *Scheduler) DoScheduler() {
 	var (
-		event    *models.JobEvent      // 任务事件
+		event    *common.JobEvent      // 任务事件
 		duration time.Duration         // 距离下次任务到期时间
 		timer    *time.Timer           // 定时器
-		result   *models.JobExecResult // 任务执行结果
+		result   *common.JobExecResult // 任务执行结果
 	)
 
 	// 获取距离下次任务开始 的时间间隔
@@ -75,7 +74,7 @@ func (scheduler *Scheduler) DoScheduler() {
 // TryScheduler 尝试调度 返回距离最近到期任务的时间间隔
 func (scheduler *Scheduler) TryScheduler() (duration time.Duration) {
 	var (
-		plan *models.JobSchedulerPlan // 任务计划表
+		plan *common.JobSchedulerPlan // 任务计划表
 		now  time.Time                // 当前时间
 		near *time.Time               //最近任务到期时间
 
@@ -110,13 +109,13 @@ func (scheduler *Scheduler) TryScheduler() (duration time.Duration) {
 }
 
 // TryRunJob 尝试执行任务
-func (scheduler *Scheduler) TryRunJob(plan *models.JobSchedulerPlan) {
+func (scheduler *Scheduler) TryRunJob(plan *common.JobSchedulerPlan) {
 	// 调度与执行是两码事
 	// 例如 每5秒钟调度一次 但是执行一次需要一分钟
 	// 接受了调度 如果上次任务还没有执行结束那么就不能执行该任务
 
 	var (
-		info      *models.JobExecInfo // 任务执行信息
+		info      *common.JobExecInfo // 任务执行信息
 		isRunning bool                // 标记任务是否正在执行
 	)
 
@@ -127,7 +126,7 @@ func (scheduler *Scheduler) TryRunJob(plan *models.JobSchedulerPlan) {
 	}
 
 	// 构建任务运行信息
-	info = models.NewJobExecInfo(plan)
+	info = common.NewJobExecInfo(plan)
 	// 保存到运行表
 	scheduler.JobExecTable[plan.Job.Name] = info
 	// 执行任务
@@ -135,37 +134,37 @@ func (scheduler *Scheduler) TryRunJob(plan *models.JobSchedulerPlan) {
 }
 
 // PushJobEvent 推送任务变化事件
-func (scheduler *Scheduler) PushJobEvent(event *models.JobEvent) {
+func (scheduler *Scheduler) PushJobEvent(event *common.JobEvent) {
 	scheduler.JobEventChan <- event
 }
 
 // HandleJobEvent 处理任务变化事件
-func (scheduler *Scheduler) HandleJobEvent(event *models.JobEvent) {
+func (scheduler *Scheduler) HandleJobEvent(event *common.JobEvent) {
 
 	var (
-		plan    *models.JobSchedulerPlan
-		info    *models.JobExecInfo
+		plan    *common.JobSchedulerPlan
+		info    *common.JobExecInfo
 		isExist bool
 		err     error
 	)
 
 	switch event.EventType {
-	case common.JOB_EVENT_SAVE:
+	case common.JobEventSave:
 		// 保存任务事件
 		// 解析job 放到planTable中
-		if plan, err = models.NewJobSchedulerPlan(event.Job); err != nil {
+		if plan, err = common.NewJobSchedulerPlan(event.Job); err != nil {
 			// 说明任务解析cron 表达式可能出问题,直接退出
 			//fmt.Println(err)
 			return
 		}
 		scheduler.JobPlanTable[event.Job.Name] = plan
-	case common.JOB_EVENT_DELETE:
+	case common.JobEventDelete:
 		// 删除任务事件
 		// 如果任务还存在 则从计划表中删除
 		if plan, isExist = scheduler.JobPlanTable[event.Job.Name]; isExist {
 			delete(scheduler.JobPlanTable, event.Job.Name)
 		}
-	case common.JOB_EVENT_KILL:
+	case common.JobEventKill:
 		// 强杀任务事件
 		// 如果任务正在运行 则杀死它
 		if info, isExist = scheduler.JobExecTable[event.Job.Name]; isExist {
@@ -178,23 +177,23 @@ func (scheduler *Scheduler) HandleJobEvent(event *models.JobEvent) {
 }
 
 // PushJobResult 推送任务执行结果
-func (scheduler *Scheduler) PushJobResult(result *models.JobExecResult) {
+func (scheduler *Scheduler) PushJobResult(result *common.JobExecResult) {
 	scheduler.JobExecResultChan <- result
 }
 
 // HandleJobResult 处理任务执行结果
-func (scheduler *Scheduler) HandleJobResult(result *models.JobExecResult) {
+func (scheduler *Scheduler) HandleJobResult(result *common.JobExecResult) {
 
 	var (
-		log   *models.JobExecLog
-		shift int64 = 1000000
+		execLog *common.JobExecLog
+		shift   int64 = 1000000
 	)
 
 	// 从执行表中删除对应的任务
 	delete(scheduler.JobExecTable, result.ExecInfo.Job.Name)
 
 	// UnixNano 默认是纳秒 这里/1000转换成微秒
-	log = &models.JobExecLog{
+	execLog = &common.JobExecLog{
 		JobName:      result.ExecInfo.Job.Name,
 		Command:      result.ExecInfo.Job.Command,
 		Output:       string(result.Output),
@@ -205,11 +204,11 @@ func (scheduler *Scheduler) HandleJobResult(result *models.JobExecResult) {
 	}
 	// 错误要单独判断是否为空
 	if result.Err != nil {
-		log.Err = result.Err.Error()
+		execLog.Err = result.Err.Error()
 	} else {
-		log.Err = "OK"
+		execLog.Err = "OK"
 	}
-	BeeCronLogger.logChan <- log
+	BeeCronLogger.LogStream <- execLog
 	fmt.Println("任务执行完成: ")
 	fmt.Println(result)
 }

@@ -1,0 +1,9 @@
+
+# etcd config
+etcd_endpoints:
+  - "127.0.0.1:2379"
+
+etcd_dail_timeout: 5000
+
+# mongo config
+mongo_url: "mongodb://localhost:27017"

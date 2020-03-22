@@ -35,8 +35,8 @@ func InitRegister() (err error) {
 
 	// 初始化配置
 	config = clientv3.Config{
-		Endpoints:   WorkerConf.EtcdEndponits,
-		DialTimeout: time.Duration(WorkerConf.EtcdDialTimeout) * time.Millisecond,
+		Endpoints:   Conf.EtcdEndponits,
+		DialTimeout: time.Duration(Conf.EtcdDialTimeout) * time.Millisecond,
 	}
 
 	// 建立连接
@@ -92,7 +92,7 @@ func (register *Register) keepOnline() {
 	}()
 
 	//拼接 etcd 中的key 服务注册key
-	key = common.JOB_WORKER_PATH + register.ip
+	key = common.JobWorkerPath + register.ip
 
 	for {
 		// 初始化上下文取消函数
@@ -150,6 +150,6 @@ func GetLocalIP() (ipv4 string, err error) {
 		}
 	}
 
-	err = common.ERR_NO_IP_FOUND
+	err = common.ErrNoIpFound
 	return
 }

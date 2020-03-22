@@ -1,10 +1,14 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 
+	"github.com/sinksmell/bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/master"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/astaxie/beego"
-	"github.com/sinksmell/bee-crontab/models"
 )
 
 type JobController struct {
@@ -27,14 +31,14 @@ type JobController struct {
 // @router /save [post]
 func (c *JobController) Save() {
 	var (
-		job  models.Job
-		resp models.Response
+		job  common.Job
+		resp common.Response
 	)
 	json.Unmarshal(c.Ctx.Input.RequestBody, &job)
-	if oldJob, err := models.MJobManager.SaveJob(&job); err != nil {
-		resp = models.NewResponse(-1, err.Error(), nil)
+	if oldJob, err := master.MJobManager.SaveJob(&job); err != nil {
+		resp = common.NewResponse(-1, err.Error(), nil)
 	} else {
-		resp = models.NewResponse(0, "success", oldJob)
+		resp = common.NewResponse(0, "success", oldJob)
 	}
 
 	c.Data["json"] = &resp
@@ -49,14 +53,14 @@ func (c *JobController) Save() {
 // @router /delete [post]
 func (c *JobController) Delete() {
 	var (
-		job  models.Job
-		resp models.Response
+		job  common.Job
+		resp common.Response
 	)
 	json.Unmarshal(c.Ctx.Input.RequestBody, &job)
-	if oldJob, err := models.MJobManager.DeleteJob(&job); err != nil {
-		resp = models.NewResponse(-1, err.Error(), nil)
+	if oldJob, err := master.MJobManager.DeleteJob(&job); err != nil {
+		resp = common.NewResponse(-1, err.Error(), nil)
 	} else {
-		resp = models.NewResponse(0, "success", oldJob)
+		resp = common.NewResponse(0, "success", oldJob)
 	}
 	c.Data["json"] = &resp
 	c.ServeJSON()
@@ -68,12 +72,12 @@ func (c *JobController) Delete() {
 // @router /list [get]
 func (c *JobController) List() {
 	var (
-		resp models.Response
+		resp common.Response
 	)
-	if jobs, err := models.MJobManager.ListJobs(); err != nil {
-		resp = models.NewResponse(-1, err.Error(), nil)
+	if jobs, err := master.MJobManager.ListJobs(); err != nil {
+		resp = common.NewResponse(-1, err.Error(), nil)
 	} else {
-		resp = models.NewResponse(0, "success", jobs)
+		resp = common.NewResponse(0, "success", jobs)
 	}
 	c.Data["json"] = &resp
 	c.ServeJSON()
@@ -87,14 +91,14 @@ func (c *JobController) List() {
 // @router /kill [post]
 func (c *JobController) Kill() {
 	var (
-		resp models.Response
-		job  models.Job
+		resp common.Response
+		job  common.Job
 	)
 	json.Unmarshal(c.Ctx.Input.RequestBody, &job)
-	if err := models.MJobManager.KillJob(&job); err != nil {
-		resp = models.NewResponse(-1, err.Error(), nil)
+	if err := master.MJobManager.KillJob(&job); err != nil {
+		resp = common.NewResponse(-1, err.Error(), nil)
 	} else {
-		resp = models.NewResponse(0, "success", nil)
+		resp = common.NewResponse(0, "success", nil)
 	}
 
 	c.Data["json"] = &resp
@@ -108,17 +112,19 @@ func (c *JobController) Kill() {
 // @router /log/:name [get]
 func (c *JobController) Log() {
 	var (
-		logs []*models.HTTPJobLog
-		resp models.Response
+		logs []*common.HTTPJobLog
+		resp common.Response
 		err  error
 	)
 
 	jobName := c.GetString(":name")
+	log.Info("job_name: ", jobName)
 	if jobName != "" {
-		if logs, err = models.ReadLog(jobName); err != nil {
-			resp = models.NewResponse(-1, err.Error(), nil)
+		if logs, err = master.ReadLog(context.TODO(), jobName); err != nil {
+			log.Errorf("read log err job_name:%s err:%w", jobName, err)
+			resp = common.NewResponse(-1, err.Error(), nil)
 		} else {
-			resp = models.NewResponse(0, "success", logs)
+			resp = common.NewResponse(0, "success", logs)
 		}
 	}
 	c.Data["json"] = &resp

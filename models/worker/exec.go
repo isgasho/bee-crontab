@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/sinksmell/bee-crontab/models"
 	"github.com/sinksmell/bee-crontab/models/common"
 )
 
@@ -26,17 +25,17 @@ func InitExecutor() (err error) {
 }
 
 // ExecuteJob 执行传入的任务
-func (executor *Executor) ExecuteJob(info *models.JobExecInfo) {
+func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 	var (
 		cmd    *exec.Cmd
 		output []byte
 		err    error
-		result *models.JobExecResult
+		result *common.JobExecResult
 		lock   *JobLock
 	)
 
 	// 初始化任务结果
-	result = &models.JobExecResult{
+	result = &common.JobExecResult{
 		ExecInfo: info,
 		Output:   make([]byte, 0),
 	}
@@ -45,16 +44,16 @@ func (executor *Executor) ExecuteJob(info *models.JobExecInfo) {
 	go func() {
 		var (
 			timer     *time.Timer   // 任务执行定时器
-			sigchan   chan struct{} // 任务执行结束消息管道
+			sigStream chan struct{} // 任务执行结束消息管道
 			timeLimit time.Duration
 		)
 		timeOut, _ := strconv.Atoi(info.Job.TimeOut)
 		timeLimit = time.Duration(timeOut) * 1000 * time.Millisecond
-		sigchan = make(chan struct{}, 1)
+		sigStream = make(chan struct{}, 1)
 
 		// 获取分布式锁
 		// 防止任务被并发地调度
-		lock = WorkerJobManager.NewLock(info.Job.Name)
+		lock = Manager.NewLock(info.Job.Name)
 		// 记录开始开始抢锁的时间
 		result.StartTime = time.Now()
 
@@ -86,7 +85,7 @@ func (executor *Executor) ExecuteJob(info *models.JobExecInfo) {
 				result.EndTime = time.Now()
 				result.Output = output
 				result.Err = err
-				sigchan <- struct{}{}
+				sigStream <- struct{}{}
 			}()
 			// 等待消息到达，如果超时那么强制杀死任务
 			for {
@@ -94,12 +93,12 @@ func (executor *Executor) ExecuteJob(info *models.JobExecInfo) {
 				case <-timer.C:
 					// 定时器到期 任务执行超时
 					info.CancelFunc()
-					result.Type = common.RES_TIMEOUT
+					result.Type = common.ResTimeout
 					result.Output = []byte("timeout!")
 					goto END
-				case <-sigchan:
+				case <-sigStream:
 					// 在限制时间内执行完成
-					result.Type = common.RES_SUCCESS
+					result.Type = common.ResSuccess
 					goto END
 				}
 			}

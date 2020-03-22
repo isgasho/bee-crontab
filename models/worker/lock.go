@@ -66,7 +66,7 @@ func (lock *JobLock) TryLock() (err error) {
 
 	// 5.创建事务
 	txn = lock.kv.Txn(context.TODO())
-	lockKey = common.JOB_LOCK_PATH + lock.jobName
+	lockKey = common.JobLockPath + lock.jobName
 
 	// 6.事务抢锁
 	txn.If(clientv3.Compare(clientv3.CreateRevision(lockKey), "=", 0)).
@@ -82,7 +82,7 @@ func (lock *JobLock) TryLock() (err error) {
 	//7.事务提交成功 判断结果
 	if !txnResp.Succeeded {
 		// 锁被占用
-		err = common.ERR_LOCK_BUSY
+		err = common.ErrLockBusy
 		goto FAIL
 	}
 

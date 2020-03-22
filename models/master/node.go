@@ -1,4 +1,4 @@
-package models
+package master
 
 import (
 	"context"
@@ -77,13 +77,13 @@ func (workerMgr *WorkerMgr) ListWorkers() (workers []*WorkerInfo, err error) {
 
 	workers = make([]*WorkerInfo, 0)
 	// 获取目录下所有的节点 ip
-	if getResp, err = workerMgr.kv.Get(context.TODO(), common.JOB_WORKER_PATH, clientv3.WithPrefix()); err != nil {
+	if getResp, err = workerMgr.kv.Get(context.TODO(), common.JobWorkerPath, clientv3.WithPrefix()); err != nil {
 		return
 	}
 
 	// 保存结果
 	for _, kvPair = range getResp.Kvs {
-		ip = ExtarctWorkerIP(string(kvPair.Key))
+		ip = common.ExtarctWorkerIP(string(kvPair.Key))
 		if len(ip) != 0 {
 			info = &WorkerInfo{IP: ip}
 			info.Time = time.Now().Format("2006-01-02 15:04:05")

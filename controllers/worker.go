@@ -2,7 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/sinksmell/bee-crontab/models"
+	"github.com/sinksmell/bee-crontab/models/common"
+	"github.com/sinksmell/bee-crontab/models/master"
 )
 
 type WorkerController struct {
@@ -20,12 +21,12 @@ type WorkerController struct {
 func (w *WorkerController) List() {
 
 	var (
-		resp models.Response
+		resp common.Response
 	)
-	if ips, err := models.WorkerManager.ListWorkers(); err == nil {
-		resp = models.NewResponse(0, "success", ips)
+	if ips, err := master.WorkerManager.ListWorkers(); err == nil {
+		resp = common.NewResponse(0, "success", ips)
 	} else {
-		resp = models.NewResponse(-1, err.Error(), nil)
+		resp = common.NewResponse(-1, err.Error(), nil)
 	}
 	w.Data["json"] = &resp
 	w.ServeJSON()

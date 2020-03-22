@@ -1,39 +1,51 @@
 package worker
 
 import (
-	"encoding/json"
-	"fmt"
+	"context"
 	"io/ioutil"
+
+	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 // WorkerConfig  Worker节点的配置结构
-type WorkerConfig struct {
-	EtcdEndponits   []string `json:"etcdEndponits"`
-	EtcdDialTimeout int      `json:"etcdDialTimeout"`
-	MongoURL        string   `json:"mongo_url"`
+type Config struct {
+	EtcdEndponits   []string `json:"etcd_endponits" yaml:"etcd_endpoints"`
+	EtcdDialTimeout int      `json:"etcd_dial_timeout" yaml:"etcd_dail_timeout"`
+	MongoURL        string   `json:"mongo_url" yaml:"mongo_url"`
 }
 
 var (
 	// WorkerConf Worker的全局配置单例
-	WorkerConf *WorkerConfig
+	Conf *Config
 )
 
 // InitConfig 解析Worker配置文件
-func InitConfig(filename string) (err error) {
+func InitConfig(ctx context.Context, filename string) (err error) {
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
+
 	var (
 		content []byte
-		config  WorkerConfig
+		config  Config
 	)
 
 	// 读取文件
 	if content, err = ioutil.ReadFile(filename); err != nil {
+		log.Errorf("read config err %w", err)
 		return
 	}
 	// 解析json
-	if err = json.Unmarshal(content, &config); err != nil {
+	if err = yaml.Unmarshal(content, &config); err != nil {
+		log.Errorf("unmarshal config err %w", err)
 		return
 	}
-	WorkerConf = &config
-	fmt.Printf("%+v\n", WorkerConf)
+	Conf = &config
+	log.Infof("config %+v\n", Conf)
+
 	return
 }

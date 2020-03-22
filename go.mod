@@ -12,8 +12,11 @@ require (
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gorhill/cronexpr v0.0.0-20180427100037-88b0669f7d75
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/sirupsen/logrus v1.4.2
 	go.etcd.io/etcd v3.3.19+incompatible
 	go.mongodb.org/mongo-driver v1.3.1
 	go.uber.org/zap v1.14.1 // indirect
+	google.golang.org/appengine v1.4.0
 	google.golang.org/grpc v1.26.0 // indirect
+	gopkg.in/yaml.v2 v2.2.2
 )

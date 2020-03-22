@@ -1,4 +1,4 @@
-package models
+package common
 
 import (
 	"context"
@@ -12,8 +12,8 @@ import (
 type Job struct {
 	Name     string `json:"name"`
 	Command  string `json:"command"`
-	CronExpr string `json:"cronExpr"`
-	TimeOut  string `json:"timeOut"` // 神坑  go中解析前端传来的json  这里使用int的话 死活得不到值
+	CronExpr string `json:"cron_expr"`
+	TimeOut  string `json:"time_out"` // 神坑  go中解析前端传来的json  这里使用int的话 死活得不到值
 }
 
 // JobSchedulerPlan 任务调度计划
@@ -43,18 +43,6 @@ type JobExecResult struct {
 	Err       error        // 错误信息
 	StartTime time.Time    // 开始运行时间
 	EndTime   time.Time    // 结束时间
-}
-
-// JobExecLog 任务执行日志
-type JobExecLog struct {
-	JobName      string ` json:"jobName" bson:"jobName"`          //任务名
-	Command      string ` json:"command" bson:"command"`          //执行命令
-	Err          string `json:"err" bson:"err"`                   //错误信息
-	Output       string `json:"output" bson:"output"`             //任务输出
-	PlanTime     int64  `json:"planTime" bson:"planTime"`         // 计划开始时间 时间戳
-	ScheduleTime int64  `json:"scheduleTime" bson:"scheduleTime"` // 实际调度时间
-	StartTime    int64  `json:"startTime" bson:"startTime"`       // 开始运行时间
-	EndTime      int64  `json:"endTime" bson:"endTime"`           // 结束运行时间
 }
 
 // LogBuffer 日志缓存 批量插入任务日志 提交吞吐效率
@@ -133,9 +121,9 @@ func (event *JobEvent) String() string {
 */
 //JobExecResult的执行结果
 func (result *JobExecResult) String() string {
-	return fmt.Sprintf("JobName:%s\tType: %d\n  Output:%s\n Err:%v",
+	return fmt.Sprintf("job_name:%s\ttype:%d\noutput:%serr:%v",
 		result.ExecInfo.Job.Name,
-		result.Type,
+		CodeMessage(result.Type),
 		string(result.Output),
 		result.Err)
 }

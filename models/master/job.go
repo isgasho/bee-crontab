@@ -1,4 +1,4 @@
-package models
+package master
 
 import (
 	"context"
@@ -54,16 +54,16 @@ func init() {
 }
 
 // SaveJob 添加或者修改一个任务
-func (jobMgr *MasterJobMgr) SaveJob(job *Job) (oldJob *Job, err error) {
+func (jobMgr *MasterJobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err error) {
 
 	var (
 		jobKey    string
 		bytes     []byte
 		putResp   *clientv3.PutResponse
-		oldJobObj Job
+		oldJobObj common.Job
 	)
 	// 得到job保存路径
-	jobKey = common.JOB_SAVE_PATH + job.Name
+	jobKey = common.JobSavePath + job.Name
 
 	if bytes, err = json.Marshal(job); err != nil {
 		return
@@ -87,15 +87,15 @@ func (jobMgr *MasterJobMgr) SaveJob(job *Job) (oldJob *Job, err error) {
 }
 
 // DeleteJob 删除一个任务
-func (jobMgr *MasterJobMgr) DeleteJob(job *Job) (oldJob *Job, err error) {
+func (jobMgr *MasterJobMgr) DeleteJob(job *common.Job) (oldJob *common.Job, err error) {
 
 	var (
 		jobKey    string
-		oldJobObj Job
+		oldJobObj common.Job
 		delResp   *clientv3.DeleteResponse
 	)
 
-	jobKey = common.JOB_SAVE_PATH + job.Name
+	jobKey = common.JobSavePath + job.Name
 	if delResp, err = MJobManager.kv.Delete(context.TODO(), jobKey, clientv3.WithPrevKV()); err != nil {
 		return
 	}
@@ -112,22 +112,22 @@ func (jobMgr *MasterJobMgr) DeleteJob(job *Job) (oldJob *Job, err error) {
 }
 
 // ListJobs 获取所有的任务
-func (jobMgr *MasterJobMgr) ListJobs() (jobs []*Job, err error) {
+func (jobMgr *MasterJobMgr) ListJobs() (jobs []*common.Job, err error) {
 	var (
 		jobKey  string
-		job     *Job
+		job     *common.Job
 		getResp *clientv3.GetResponse
 	)
 
-	jobKey = common.JOB_SAVE_PATH
-	jobs = make([]*Job, 0)
+	jobKey = common.JobSavePath
+	jobs = make([]*common.Job, 0)
 	if getResp, err = jobMgr.kv.Get(context.TODO(), jobKey, clientv3.WithPrefix()); err != nil {
 		return
 	}
 
 	if len(getResp.Kvs) != 0 {
 		for _, kvPair := range getResp.Kvs {
-			job = &Job{}
+			job = &common.Job{}
 			if err = json.Unmarshal(kvPair.Value, job); err != nil {
 				// 容忍了个别任务反序列化失败
 				// 正常情况下是可以反序列化的
@@ -141,10 +141,10 @@ func (jobMgr *MasterJobMgr) ListJobs() (jobs []*Job, err error) {
 }
 
 // KillJob  杀死一个任务 向 /cron/killer/JobName put 一个值 worker监听变化,强行终止对应的任务
-func (jobMgr *MasterJobMgr) KillJob(job *Job) (err error) {
+func (jobMgr *MasterJobMgr) KillJob(job *common.Job) (err error) {
 
 	var (
-		killJobKey = common.JOB_KILLER_PATH + job.Name
+		killJobKey = common.JobKillerPath + job.Name
 		leaseID    clientv3.LeaseID
 		grantResp  *clientv3.LeaseGrantResponse
 	)

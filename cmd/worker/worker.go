@@ -1,23 +1,30 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"time"
+
+	"google.golang.org/appengine/log"
 
 	"github.com/sinksmell/bee-crontab/models/worker"
 )
 
 func main() {
 	var (
-		err error
+		err    error
+		ctx    context.Context
+		cancel context.CancelFunc
 	)
+	ctx, cancel = context.WithCancel(context.Background())
+	defer cancel()
+
 	// 初始化配置
-	if err = worker.InitConfig("worker.json"); err != nil {
+	if err = worker.InitConfig(ctx, "worker.yaml"); err != nil {
 		goto ERR
 	}
 
 	// 启动日志协程
-	if err = worker.InitLogger(); err != nil {
+	if err = worker.InitLogger(ctx); err != nil {
 		goto ERR
 	}
 
@@ -45,5 +52,6 @@ func main() {
 	}
 
 ERR:
-	fmt.Println(err)
+	log.Errorf(ctx, "worker start failed", err)
+
 }
