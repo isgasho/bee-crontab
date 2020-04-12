@@ -2,35 +2,71 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/conf/worker.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/common/logger.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/master/log.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/worker/config_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/master/log.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/master/uid.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/worker/worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/worker/worker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/worker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/filters.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/filters.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/logger.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/protocol.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/protocol.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/common/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/common/protocol.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/protocol.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/common/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/master/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/worker/exec.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/exec.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/jobMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/job_manager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/worker/job_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/job_manager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/worker/scheduler.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/scheduler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/commentsRouter_controllers.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
+        <item name="log: table" type="531e99d1:MongoImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
+        <item name="log: table" type="531e99d1:MongoImplModel$Table" />
+        <item name="_id: column" type="a4155d2c:MongoImplModel$TableColumn" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
+        <item name="log: table" type="531e99d1:MongoImplModel$Table" />
+        <item name="output: column" type="a4155d2c:MongoImplModel$TableColumn" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -104,13 +140,13 @@
       <recent name="$PROJECT_DIR$/bin/linux64/worker" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestInitConfig in github.com/sinksmell/bee-crontab/models/worker">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <component name="RunManager" selected="Go Build.go build github.com/sinksmell/bee-crontab/cmd/worker">
+    <configuration name="go build github.com/sinksmell/bee-crontab/cmd/worker" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="bee-crontab" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <go_parameters value="-i" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/" />
+      <working_directory value="$PROJECT_DIR$/bin" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/cmd/worker/worker.go" />
+      <package value="github.com/sinksmell/bee-crontab/cmd/worker" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -145,23 +181,15 @@
       <pattern value="^TestInitConfig$" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="bee-crontab" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <go_parameters value="-i" />
-      <framework value="gotest" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$/" />
-      <filePath value="$PROJECT_DIR$/" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Go Build.go build worker.go " />
       <item itemvalue="Go Build.go build worker.go" />
+      <item itemvalue="Go Build.go build github.com/sinksmell/bee-crontab/cmd/worker" />
       <item itemvalue="Go Test.TestInitConfig in github.com/sinksmell/bee-crontab/models/worker" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build github.com/sinksmell/bee-crontab/cmd/worker" />
         <item itemvalue="Go Test.TestInitConfig in github.com/sinksmell/bee-crontab/models/worker" />
         <item itemvalue="Go Build.go build worker.go " />
         <item itemvalue="Go Build.go build worker.go" />
@@ -193,30 +221,43 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="283" y="60" key="#GOROOT/0.0.1366.768@0.0.1366.768" timestamp="1584851708070" />
-    <state x="164" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584865538601">
-      <screen x="29" y="23" width="1337" height="745" />
+    <state x="138" y="35" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586673518075">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state x="138" y="35" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1586673518075" />
     <state x="164" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog/29.23.1337.745@29.23.1337.745" timestamp="1584865538601" />
-    <state width="1288" height="208" key="GridCell.Tab.0.bottom" timestamp="1584865943276">
-      <screen x="29" y="23" width="1337" height="745" />
+    <state width="1324" height="316" key="GridCell.Tab.0.bottom" timestamp="1586677406245">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state width="1324" height="316" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1586677406245" />
     <state width="1288" height="208" key="GridCell.Tab.0.bottom/29.23.1337.745@29.23.1337.745" timestamp="1584865943276" />
-    <state width="1288" height="208" key="GridCell.Tab.0.center" timestamp="1584865943275">
-      <screen x="29" y="23" width="1337" height="745" />
+    <state width="1324" height="316" key="GridCell.Tab.0.center" timestamp="1586677406243">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state width="1324" height="316" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1586677406243" />
     <state width="1288" height="208" key="GridCell.Tab.0.center/29.23.1337.745@29.23.1337.745" timestamp="1584865943275" />
-    <state width="1288" height="208" key="GridCell.Tab.0.left" timestamp="1584865943273">
-      <screen x="29" y="23" width="1337" height="745" />
+    <state width="1324" height="316" key="GridCell.Tab.0.left" timestamp="1586677406242">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state width="1324" height="316" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1586677406242" />
     <state width="1288" height="208" key="GridCell.Tab.0.left/29.23.1337.745@29.23.1337.745" timestamp="1584865943273" />
-    <state width="1288" height="208" key="GridCell.Tab.0.right" timestamp="1584865943276">
-      <screen x="29" y="23" width="1337" height="745" />
+    <state width="1324" height="316" key="GridCell.Tab.0.right" timestamp="1586677406244">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state width="1324" height="316" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1586677406244" />
     <state width="1288" height="208" key="GridCell.Tab.0.right/29.23.1337.745@29.23.1337.745" timestamp="1584865943276" />
     <state x="192" y="23" key="SettingsEditor" timestamp="1584776687320">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="192" y="23" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1584776687320" />
+    <state x="546" y="286" width="342" height="198" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1585486801321">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="546" y="286" width="342" height="198" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1366.768@0.0.1366.768" timestamp="1585486801321" />
+    <state x="412" y="154" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1585486860229">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="412" y="154" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1366.768@0.0.1366.768" timestamp="1585486860229" />
     <state x="365" y="92" width="670" height="676" key="search.everywhere.popup" timestamp="1584878361032">
       <screen x="30" y="23" width="1336" height="745" />
     </state>

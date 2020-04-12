@@ -33,8 +33,17 @@ func (c *JobController) Save() {
 	var (
 		job  common.Job
 		resp common.Response
+		err  error
 	)
-	json.Unmarshal(c.Ctx.Input.RequestBody, &job)
+	if err = json.Unmarshal(c.Ctx.Input.RequestBody, &job); err != nil {
+		resp = common.NewResponse(-1, err.Error(), nil)
+		c.Data["json"] = resp
+		return
+	}
+	log.Infof("request is :%+v\n", job)
+	if len(job.ID) == 0 {
+		job.ID = master.NewID()
+	}
 	if oldJob, err := master.MJobManager.SaveJob(&job); err != nil {
 		resp = common.NewResponse(-1, err.Error(), nil)
 	} else {

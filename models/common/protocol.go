@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/gorhill/cronexpr"
 )
 
 // Job 任务结构
 type Job struct {
+	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Command  string `json:"command"`
 	CronExpr string `json:"cron_expr"`
@@ -80,6 +83,7 @@ func NewJobSchedulerPlan(job *Job) (plan *JobSchedulerPlan, err error) {
 		expr *cronexpr.Expression
 	)
 	if expr, err = cronexpr.Parse(job.CronExpr); err != nil {
+		log.Errorf("parse cron expr err: %v", err)
 		return
 	}
 	// 构造调度计划对象
@@ -121,9 +125,14 @@ func (event *JobEvent) String() string {
 */
 //JobExecResult的执行结果
 func (result *JobExecResult) String() string {
-	return fmt.Sprintf("job_name:%s\ttype:%d\noutput:%serr:%v",
+	return fmt.Sprintf("job_name:%s\ttype:%s\noutput:%serr:%v",
 		result.ExecInfo.Job.Name,
 		CodeMessage(result.Type),
 		string(result.Output),
 		result.Err)
+}
+
+//
+func (plan *JobSchedulerPlan) String() string {
+	return fmt.Sprintf("id:%s, expr:%s, next_time:%s", plan.Job.ID, plan.Job.CronExpr, plan.NextTime)
 }

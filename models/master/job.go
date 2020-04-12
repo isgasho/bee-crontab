@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/astaxie/beego"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/sinksmell/bee-crontab/models/common"
@@ -12,11 +14,11 @@ import (
 
 var (
 	// MJobManager master 任务管理器 单例全局变量
-	MJobManager *MasterJobMgr
+	MJobManager *JobMgr
 )
 
 // MasterJobMgr  任务管理器
-type MasterJobMgr struct {
+type JobMgr struct {
 	client *clientv3.Client
 	kv     clientv3.KV
 	lease  clientv3.Lease
@@ -45,7 +47,7 @@ func init() {
 	lease = clientv3.NewLease(client)
 
 	// 组装单例
-	MJobManager = &MasterJobMgr{
+	MJobManager = &JobMgr{
 		client: client,
 		kv:     kv,
 		lease:  lease,
@@ -54,7 +56,7 @@ func init() {
 }
 
 // SaveJob 添加或者修改一个任务
-func (jobMgr *MasterJobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err error) {
+func (jobMgr *JobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err error) {
 
 	var (
 		jobKey    string
@@ -63,13 +65,14 @@ func (jobMgr *MasterJobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err er
 		oldJobObj common.Job
 	)
 	// 得到job保存路径
-	jobKey = common.JobSavePath + job.Name
-
+	jobKey = getJobKey(job.ID)
+	log.Info(jobKey)
 	if bytes, err = json.Marshal(job); err != nil {
 		return
 	}
 	// etcd put 操作
 	if putResp, err = MJobManager.kv.Put(context.TODO(), jobKey, string(bytes), clientv3.WithPrevKV()); err != nil {
+		log.Error(err)
 		return
 	}
 	// 如果prevKV 不为空则返回旧值
@@ -83,11 +86,13 @@ func (jobMgr *MasterJobMgr) SaveJob(job *common.Job) (oldJob *common.Job, err er
 	}
 	// 赋值旧值
 	oldJob = &oldJobObj
+	log.Infof("old job info is: %+v\n", oldJob)
+
 	return
 }
 
 // DeleteJob 删除一个任务
-func (jobMgr *MasterJobMgr) DeleteJob(job *common.Job) (oldJob *common.Job, err error) {
+func (jobMgr *JobMgr) DeleteJob(job *common.Job) (oldJob *common.Job, err error) {
 
 	var (
 		jobKey    string
@@ -95,7 +100,7 @@ func (jobMgr *MasterJobMgr) DeleteJob(job *common.Job) (oldJob *common.Job, err 
 		delResp   *clientv3.DeleteResponse
 	)
 
-	jobKey = common.JobSavePath + job.Name
+	jobKey = getJobKey(job.ID)
 	if delResp, err = MJobManager.kv.Delete(context.TODO(), jobKey, clientv3.WithPrevKV()); err != nil {
 		return
 	}
@@ -112,16 +117,16 @@ func (jobMgr *MasterJobMgr) DeleteJob(job *common.Job) (oldJob *common.Job, err 
 }
 
 // ListJobs 获取所有的任务
-func (jobMgr *MasterJobMgr) ListJobs() (jobs []*common.Job, err error) {
+func (jobMgr *JobMgr) ListJobs() (jobs []*common.Job, err error) {
 	var (
-		jobKey  string
-		job     *common.Job
-		getResp *clientv3.GetResponse
+		allJobKey string
+		job       *common.Job
+		getResp   *clientv3.GetResponse
 	)
 
-	jobKey = common.JobSavePath
+	allJobKey = common.JobSavePath
 	jobs = make([]*common.Job, 0)
-	if getResp, err = jobMgr.kv.Get(context.TODO(), jobKey, clientv3.WithPrefix()); err != nil {
+	if getResp, err = jobMgr.kv.Get(context.TODO(), allJobKey, clientv3.WithPrefix()); err != nil {
 		return
 	}
 
@@ -141,7 +146,7 @@ func (jobMgr *MasterJobMgr) ListJobs() (jobs []*common.Job, err error) {
 }
 
 // KillJob  杀死一个任务 向 /cron/killer/JobName put 一个值 worker监听变化,强行终止对应的任务
-func (jobMgr *MasterJobMgr) KillJob(job *common.Job) (err error) {
+func (jobMgr *JobMgr) KillJob(job *common.Job) (err error) {
 
 	var (
 		killJobKey = common.JobKillerPath + job.Name
@@ -162,4 +167,9 @@ func (jobMgr *MasterJobMgr) KillJob(job *common.Job) (err error) {
 	}
 
 	return
+}
+
+//
+func getJobKey(id string) string {
+	return common.JobSavePath + id
 }

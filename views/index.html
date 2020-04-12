@@ -45,6 +45,11 @@
                         border
                         style="width: 100%">
                     <el-table-column
+                            prop="id"
+                            label="任务ID"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
                             prop="name"
                             label="任务名"
                             width="100">
@@ -52,43 +57,42 @@
                     <el-table-column
                             prop="command"
                             label="任务命令"
-                            width="200">
+                            width="150">
                     </el-table-column>
                     <el-table-column
-                        prop="cron_expr"
-                        label="cron表达式"
-                        width="200">
-                </el-table-column>
+                            prop="cron_expr"
+                            label="cron表达式"
+                            width="120">
+                    </el-table-column>
                     <el-table-column
                             prop="time_out"
                             label="超时时间"
                             width="100">
                     </el-table-column>
                     <el-table-column
-                            label="操作"
-                    >
+                            label="操作">
                         <template slot-scope="scope">
 
                             <el-button class="waves-effect waves-light light-blue darken-2 btn-small"
                                        @click="handleEdit(scope.$index,scope.row)"
                                        type="primary"
-                                       size="medium">编辑
+                                       size="small">编辑
                             </el-button>
                             <el-button class="waves-effect waves-light red darken-2 btn-small"
                                        @click="handleRemove(scope.$index,scope.row)"
                                        type="danger"
-                                       size="medium">删除
+                                       size="small">删除
                             </el-button>
                             <el-button class="waves-effect waves-light yellow darken-2 btn-small"
                                        @click="killJob(scope.row)"
                                        type="warning"
-                                       size="medium">强杀
+                                       size="small">强杀
                             </el-button>
 
                             <el-button class="waves-effect waves-light green lighten-2 btn-small"
                                        @click="getLog(scope.row)"
                                        type="success"
-                                       size="medium">日志
+                                       size="small">日志
                             </el-button>
 
                         </template>
@@ -184,10 +188,11 @@
                 logVisible: false,
                 nodeVisible: false,
                 jobForm: {
+                    id: '',
                     name: '',
                     command: '',
                     cron_expr: '',
-                    time_out:0
+                    time_out: 0
                 },
                 logData: [],
                 nodeData: [],
@@ -201,14 +206,18 @@
                 // console.log(row)
                 // console.log(row.name)
                 // console.log(index)
+                this.jobForm.id = row.id
                 this.jobForm.name = row.name
                 this.jobForm.command = row.command
                 this.jobForm.cron_expr = row.cron_expr
-                this.jobForm.time_out=row.time_out
+                this.jobForm.time_out = row.time_out
                 this.dialogVisible = true
+
+                this.showForum()
             },
             handleRemove(index, row) {
                 axios.post('/v1/job/delete', {
+                    id: row.id,
                     name: row.name
                 }).then(res => {
                     if (res.data.code == 0) {
@@ -256,7 +265,7 @@
             },
             getWorkers() {
                 this.nodeVisible = true
-                axios.get("/v1/worker/list" ).then(res => {
+                axios.get("/v1/worker/list").then(res => {
                     this.nodeData = res.data.data
                 })
             },
@@ -273,9 +282,10 @@
                     //  console.log(res.data)
                     this.tableData = res.data.data
                 })
+                this.clearForm()
             },
             createJob() {
-                console.log(this.jobForm.time_out)
+                this.showForum()
                 axios.post('/v1/job/save', this.jobForm).then(res => {
                     //   console.log(res.data)
                     this.clearForm()
@@ -298,15 +308,23 @@
             },
 
             clearForm() {
+                this.jobForm.id = ''
                 this.jobForm.name = ''
                 this.jobForm.command = ''
                 this.jobForm.cron_expr = ''
-                this.jobForm.time_out=0
+                this.jobForm.time_out = 0
+            },
+            showForum() {
+                console.log("id", this.jobForm.id)
+                console.log("name", this.jobForm.name)
+                console.log("command", this.jobForm.command)
+                console.log("cron_expr", this.jobForm.cron_expr)
+                console.log("time_out", this.jobForm.time_out)
             }
         },
         mounted() {
             axios.get('/v1/job/list').then(res => {
-                //  console.log(res.data)
+                console.log(res.data)
                 this.tableData = res.data.data
             })
         }

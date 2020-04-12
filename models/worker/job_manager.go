@@ -2,8 +2,9 @@ package worker
 
 import (
 	"context"
-	"fmt"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
@@ -59,6 +60,7 @@ func InitJobMgr() (err error) {
 
 	// 启动监听任务
 	if err = Manager.WatchJobs(); err != nil {
+		log.Errorf("watch jobs err:%v", err)
 		return
 	}
 
@@ -87,6 +89,7 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 
 	// 1.get /cron/jobs/下所有任务 并获取 revision
 	if getResp, err = jobMgr.kv.Get(context.TODO(), common.JobSavePath, clientv3.WithPrefix()); err != nil {
+		log.Errorf("get all jobs err:%v\n", err)
 		return
 	}
 
@@ -100,8 +103,7 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 			//TODO:构造事件 发送给调度器
 			jobEvent = common.NewJobEvent(common.JobEventSave, job)
 			BeeScheduler.PushJobEvent(jobEvent)
-			//fmt.Println("构造任务事件!")
-			fmt.Println(jobEvent)
+			log.Infof("send job event :%+v\n", jobEvent)
 		}
 	}
 
@@ -121,9 +123,9 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 					}
 					// 构造一个更新事件
 					jobEvent = common.NewJobEvent(common.JobEventSave, job)
-					fmt.Println(jobEvent)
 					//  传给调度器
 					BeeScheduler.PushJobEvent(jobEvent)
+					log.Infof("send job event :%+v\n", jobEvent)
 				case mvccpb.DELETE:
 					// 任务删除事件
 					jobName = common.ExtractJobName(string(watchEvent.Kv.Key))
@@ -132,6 +134,7 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 					jobEvent = common.NewJobEvent(common.JobEventDelete, job)
 					// 推送给调度器
 					BeeScheduler.PushJobEvent(jobEvent)
+					log.Infof("send job event :%+v\n", jobEvent)
 				}
 			}
 		}
@@ -175,6 +178,7 @@ func (jobMgr *JobManager) WatchKillers() (err error) {
 					jobEvent = common.NewJobEvent(common.JobEventKill, job)
 					// 事件推送给 schedular
 					BeeScheduler.PushJobEvent(jobEvent)
+					log.Infof("send job event : %v\n", jobEvent)
 				case mvccpb.DELETE:
 					// killer 任务过期
 				}
@@ -188,6 +192,6 @@ func (jobMgr *JobManager) WatchKillers() (err error) {
 }
 
 // NewLock 创建分布式锁
-func (jobMgr *JobManager) NewLock(jobName string) (lock *JobLock) {
-	return InitJobLock(jobName, jobMgr.kv, jobMgr.lease)
+func (jobMgr *JobManager) NewLock(jobID string) (lock *JobLock) {
+	return InitJobLock(jobID, jobMgr.kv, jobMgr.lease)
 }

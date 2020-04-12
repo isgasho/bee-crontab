@@ -1,8 +1,9 @@
 package worker
 
 import (
-	"fmt"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/sinksmell/bee-crontab/models/common"
 )
@@ -55,6 +56,7 @@ func (scheduler *Scheduler) DoScheduler() {
 	for {
 		select {
 		case event = <-scheduler.JobEventChan:
+			log.Infof("recv job event: %s", event.String())
 			//任务事件传来
 			scheduler.HandleJobEvent(event)
 		case <-timer.C:
@@ -80,7 +82,7 @@ func (scheduler *Scheduler) TryScheduler() (duration time.Duration) {
 
 	)
 	if len(scheduler.JobPlanTable) == 0 {
-		fmt.Println("没有任务呢！")
+		log.Info("no job need to do")
 		// 如果现在没有计划中的任务
 		// 就返回一秒  让调度器睡1秒
 		duration = time.Second
@@ -119,8 +121,8 @@ func (scheduler *Scheduler) TryRunJob(plan *common.JobSchedulerPlan) {
 		isRunning bool                // 标记任务是否正在执行
 	)
 
-	if info, isRunning = scheduler.JobExecTable[plan.Job.Name]; isRunning {
-		fmt.Println("任务正在执行,尚未退出! ", plan.Job.Name)
+	if info, isRunning = scheduler.JobExecTable[plan.Job.ID]; isRunning {
+		log.Warnf("job %s is running,not finish\n", plan.Job.ID)
 		// 直接退出
 		return
 	}
@@ -128,7 +130,8 @@ func (scheduler *Scheduler) TryRunJob(plan *common.JobSchedulerPlan) {
 	// 构建任务运行信息
 	info = common.NewJobExecInfo(plan)
 	// 保存到运行表
-	scheduler.JobExecTable[plan.Job.Name] = info
+	scheduler.JobExecTable[plan.Job.ID] = info
+	log.Infof("try to run job: %s\n", info.Job.ID)
 	// 执行任务
 	BeeCronExecutor.ExecuteJob(info)
 }
@@ -154,23 +157,25 @@ func (scheduler *Scheduler) HandleJobEvent(event *common.JobEvent) {
 		// 解析job 放到planTable中
 		if plan, err = common.NewJobSchedulerPlan(event.Job); err != nil {
 			// 说明任务解析cron 表达式可能出问题,直接退出
-			//fmt.Println(err)
+			log.Errorf("handle job err: %v\n", err)
 			return
 		}
-		scheduler.JobPlanTable[event.Job.Name] = plan
+		log.Infof("job plan is: %s\n", plan)
+		log.Infof("event is: %+v\n", event)
+		scheduler.JobPlanTable[event.Job.ID] = plan
 	case common.JobEventDelete:
 		// 删除任务事件
 		// 如果任务还存在 则从计划表中删除
-		if plan, isExist = scheduler.JobPlanTable[event.Job.Name]; isExist {
-			delete(scheduler.JobPlanTable, event.Job.Name)
+		if plan, isExist = scheduler.JobPlanTable[event.Job.ID]; isExist {
+			delete(scheduler.JobPlanTable, event.Job.ID)
 		}
 	case common.JobEventKill:
 		// 强杀任务事件
 		// 如果任务正在运行 则杀死它
-		if info, isExist = scheduler.JobExecTable[event.Job.Name]; isExist {
+		if info, isExist = scheduler.JobExecTable[event.Job.ID]; isExist {
 			// 执行 cancelFunc 终止程序运行
 			info.CancelFunc()
-			fmt.Println("杀死任务 ", info.Job.Name)
+			log.Info("kill job ", info.Job.ID)
 		}
 	}
 
@@ -186,14 +191,15 @@ func (scheduler *Scheduler) HandleJobResult(result *common.JobExecResult) {
 
 	var (
 		execLog *common.JobExecLog
-		shift   int64 = 1000000
+		shift   int64 = 1000000 // 转换成毫秒
 	)
 
 	// 从执行表中删除对应的任务
-	delete(scheduler.JobExecTable, result.ExecInfo.Job.Name)
+	delete(scheduler.JobExecTable, result.ExecInfo.Job.ID)
 
 	// UnixNano 默认是纳秒 这里/1000转换成微秒
 	execLog = &common.JobExecLog{
+		JobID:        result.ExecInfo.Job.ID,
 		JobName:      result.ExecInfo.Job.Name,
 		Command:      result.ExecInfo.Job.Command,
 		Output:       string(result.Output),
@@ -209,6 +215,6 @@ func (scheduler *Scheduler) HandleJobResult(result *common.JobExecResult) {
 		execLog.Err = "OK"
 	}
 	BeeCronLogger.LogStream <- execLog
-	fmt.Println("任务执行完成: ")
-	fmt.Println(result)
+	log.Infof("job %s is finish\n", execLog.JobID)
+	log.Infof("job exec result:\n%s", result)
 }

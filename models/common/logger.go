@@ -5,7 +5,6 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -32,6 +31,7 @@ type HTTPJobLog struct {
 
 // JobExecLog 任务执行日志 MongoDB 存储
 type JobExecLog struct {
+	JobID        string `json:"job_id" bson:"job_id"`
 	JobName      string ` json:"job_name" bson:"job_name"`          //任务名
 	Command      string ` json:"command" bson:"command"`            //执行命令
 	Err          string `json:"err" bson:"err"`                     //错误信息
@@ -105,13 +105,13 @@ func (logger *Logger) WriteLoop() {
 			// 有日志传来
 			buffer.Logs = append(buffer.Logs, execLog)
 			if len(buffer.Logs) >= maxSize {
-				log.Info("execLog buffer满了!")
+				// log.Info("execLog buffer满了!")
 				logger.saveLogs(buffer)
 				buffer = nil
 				commitTimer.Reset(timeOut)
 			}
 		case <-commitTimer.C:
-			log.Info("log存储定时器到期！")
+			// log.Info("log存储定时器到期！")
 			// 定时器到期
 			if buffer != nil {
 				// 保存日志
@@ -126,11 +126,16 @@ func (logger *Logger) WriteLoop() {
 
 // 批量保存日志
 func (logger *Logger) saveLogs(buffer *LogBuffer) {
+	if buffer == nil || len(buffer.Logs) == 0 {
+		log.Info("no log need to save")
+		return
+	}
 	_, err := logger.LogCollection.InsertMany(context.TODO(), buffer.Logs)
 	if err != nil {
 		log.Errorf("batch save logs err", err)
+		return
 	}
-	log.Info("写入日志成功!")
+	log.Info("batch save log success")
 }
 
 // 日志读取

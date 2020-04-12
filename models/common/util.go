@@ -22,12 +22,9 @@ func ExtarctWorkerIP(key string) string {
 
 // UnpackJob 反序列化得到Job
 func UnpackJob(value []byte) (ret *Job, err error) {
-	var (
-		job Job
-	)
-	if err = json.Unmarshal(value, &job); err != nil {
+	ret = &Job{}
+	if err = json.Unmarshal(value, &ret); err != nil {
 		return
 	}
-	ret = &job
 	return
 }

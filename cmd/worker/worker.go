@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"google.golang.org/appengine/log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/sinksmell/bee-crontab/models/worker"
 )
@@ -27,23 +27,24 @@ func main() {
 	if err = worker.InitLogger(ctx); err != nil {
 		goto ERR
 	}
-
 	// 启动执行器
 	if err = worker.InitExecutor(); err != nil {
 		goto ERR
 	}
-
 	// 启动调度协程
 	if err = worker.InitScheduler(); err != nil {
+		log.Error("start scheduler err")
 		goto ERR
 	}
 	// 启动任务管理器
 	if err = worker.InitJobMgr(); err != nil {
+		log.Error("start job manager err")
 		goto ERR
 	}
 
 	// 启动服务注册
 	if err = worker.InitRegister(); err != nil {
+		log.Error("start init register err")
 		goto ERR
 	}
 
@@ -52,6 +53,6 @@ func main() {
 	}
 
 ERR:
-	log.Errorf(ctx, "worker start failed", err)
+	log.Errorf("worker start failed %v", err)
 
 }

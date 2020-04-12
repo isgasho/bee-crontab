@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/sinksmell/bee-crontab/models/common"
 )
 
@@ -39,7 +41,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 		ExecInfo: info,
 		Output:   make([]byte, 0),
 	}
-
+	log.Infof("exec job:%s", info.Job.ID)
 	// 启动协程来处理任务
 	go func() {
 		var (
@@ -53,7 +55,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 
 		// 获取分布式锁
 		// 防止任务被并发地调度
-		lock = Manager.NewLock(info.Job.Name)
+		lock = Manager.NewLock(info.Job.ID)
 		// 记录开始开始抢锁的时间
 		result.StartTime = time.Now()
 
@@ -68,6 +70,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 		defer lock.UnLock()
 
 		if err != nil {
+			log.Errorf("lock job err:%v", err)
 			// 上锁失败
 			result.Err = err
 			result.EndTime = time.Now()
@@ -75,6 +78,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 			// 重置开始时间
 			result.StartTime = time.Now()
 			// 初始化shell命令
+			log.Infof("real run job:%s", info.Job.ID)
 			cmd = exec.CommandContext(info.CancelCtx, "/bin/bash", "-c", info.Job.Command)
 			timer = time.NewTimer(timeLimit)
 			// 执行并捕获输出

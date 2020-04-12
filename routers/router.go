@@ -16,14 +16,15 @@ func init() {
 	beego.Router("/", &controllers.HomeController{})
 	ns := beego.NewNamespace("/v1",
 		beego.NSNamespace("/job",
-			beego.NSInclude(
-				&controllers.JobController{},
-			),
+			beego.NSRouter("/save", &controllers.JobController{}, "post:Save"),
+			beego.NSRouter("/edit", &controllers.JobController{}, "post:Save"),
+			beego.NSRouter("/list", &controllers.JobController{}, "get:List"),
+			beego.NSRouter("/kill", &controllers.JobController{}, "post:Kill"),
+			beego.NSRouter("/delete", &controllers.JobController{}, "post:Delete"),
+			beego.NSRouter("/log/:name", &controllers.JobController{}, "get:Log"),
 		),
 		beego.NSNamespace("/worker",
-			beego.NSInclude(
-				&controllers.WorkerController{},
-			),
+			beego.NSRouter("/list", &controllers.JobController{}, "get:List"),
 		),
 	)
 	beego.AddNamespace(ns)
