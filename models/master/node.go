@@ -2,6 +2,7 @@ package master
 
 import (
 	"context"
+	log "github.com/sirupsen/logrus"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -78,6 +79,7 @@ func (workerMgr *WorkerMgr) ListWorkers() (workers []*WorkerInfo, err error) {
 	workers = make([]*WorkerInfo, 0)
 	// 获取目录下所有的节点 ip
 	if getResp, err = workerMgr.kv.Get(context.TODO(), common.JobWorkerPath, clientv3.WithPrefix()); err != nil {
+		log.Error(err)
 		return
 	}
 

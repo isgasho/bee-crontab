@@ -48,6 +48,12 @@ func main() {
 		goto ERR
 	}
 
+	// 启动监控服务
+	if err = worker.InitPromMetrics(); err != nil {
+		log.Error("start init prom metrics err")
+		goto ERR
+	}
+
 	for {
 		time.Sleep(100 * time.Millisecond)
 	}

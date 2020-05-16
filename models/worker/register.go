@@ -2,7 +2,10 @@ package worker
 
 import (
 	"context"
+	"fmt"
+	log "github.com/sirupsen/logrus"
 	"net"
+	"os"
 	"time"
 
 	"github.com/coreos/etcd/clientv3"
@@ -14,7 +17,7 @@ type Register struct {
 	client *clientv3.Client
 	kv     clientv3.KV
 	lease  clientv3.Lease
-	ip     string // 本机ip
+	info   string // 本机ip+pid信息
 }
 
 var (
@@ -31,6 +34,7 @@ func InitRegister() (err error) {
 		kv     clientv3.KV
 		lease  clientv3.Lease
 		ip     string
+		pid    int
 	)
 
 	// 初始化配置
@@ -41,6 +45,7 @@ func InitRegister() (err error) {
 
 	// 建立连接
 	if client, err = clientv3.New(config); err != nil {
+		log.Error(err)
 		return
 	}
 
@@ -49,17 +54,20 @@ func InitRegister() (err error) {
 	lease = clientv3.NewLease(client)
 
 	if ip, err = GetLocalIP(); err != nil {
+		log.Error(err)
 		return
 	}
+
+	pid = os.Getpid()
 
 	// 初始化单例
 	WorkerRegister = &Register{
 		client: client,
 		kv:     kv,
 		lease:  lease,
-		ip:     ip,
+		info:   fmt.Sprintf("ip: %s,pid: %d", ip, pid),
 	}
-
+	log.Info("start register worker node")
 	go WorkerRegister.keepOnline()
 
 	return
@@ -92,7 +100,7 @@ func (register *Register) keepOnline() {
 	}()
 
 	//拼接 etcd 中的key 服务注册key
-	key = common.JobWorkerPath + register.ip
+	key = common.JobWorkerPath + register.info
 
 	for {
 		// 初始化上下文取消函数

@@ -13,6 +13,7 @@ type Config struct {
 	EtcdEndponits   []string `json:"etcd_endponits" yaml:"etcd_endpoints"`
 	EtcdDialTimeout int      `json:"etcd_dial_timeout" yaml:"etcd_dail_timeout"`
 	MongoURL        string   `json:"mongo_url" yaml:"mongo_url"`
+	PromPort        int      `json:"prom_port" yaml:"prom_port"`
 }
 
 var (

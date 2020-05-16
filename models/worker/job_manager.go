@@ -79,7 +79,7 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 		getResp           *clientv3.GetResponse
 		kvPair            *mvccpb.KeyValue
 		job               *common.Job
-		jobName           string
+		jobID             string
 		watchStartRevison int64
 		watchChan         clientv3.WatchChan
 		watchResp         clientv3.WatchResponse
@@ -128,8 +128,8 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 					log.Infof("send job event :%+v\n", jobEvent)
 				case mvccpb.DELETE:
 					// 任务删除事件
-					jobName = common.ExtractJobName(string(watchEvent.Kv.Key))
-					job = &common.Job{Name: jobName}
+					jobID = common.ExtractJobID(string(watchEvent.Kv.Key))
+					job = &common.Job{Name: jobID}
 					// 构造一个任务删除事件
 					jobEvent = common.NewJobEvent(common.JobEventDelete, job)
 					// 推送给调度器
@@ -154,7 +154,7 @@ func (jobMgr *JobManager) WatchKillers() (err error) {
 		watchResp         clientv3.WatchResponse
 		watchEvent        *clientv3.Event
 		jobEvent          *common.JobEvent
-		jobName           string
+		jobID             string
 		job               *common.Job
 		watchStartRevison int64
 	)
@@ -173,8 +173,8 @@ func (jobMgr *JobManager) WatchKillers() (err error) {
 				case mvccpb.PUT:
 					// 杀死某个任务
 					// 从key中提取出任务名
-					jobName = common.ExtractKillerName(string(watchEvent.Kv.Key))
-					job = &common.Job{Name: jobName}
+					jobID = common.ExtractKillerID(string(watchEvent.Kv.Key))
+					job = &common.Job{ID: jobID}
 					jobEvent = common.NewJobEvent(common.JobEventKill, job)
 					// 事件推送给 schedular
 					BeeScheduler.PushJobEvent(jobEvent)

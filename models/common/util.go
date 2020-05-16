@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// ExtractJobName 从etcd key中提取出Job Name
-func ExtractJobName(key string) string {
+// ExtractJobID 从etcd key中提取出Job ID
+func ExtractJobID(key string) string {
 	return strings.TrimPrefix(key, JobSavePath)
 }
 
-// ExtractKillerName 从etcd killer 的key中提取JobName
-func ExtractKillerName(key string) string {
+// ExtractKillerID 从etcd killer 的key中提取Job ID
+func ExtractKillerID(key string) string {
 	return strings.TrimPrefix(key, JobKillerPath)
 }
 

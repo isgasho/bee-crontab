@@ -104,6 +104,9 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 					// 在限制时间内执行完成
 					result.Type = common.ResSuccess
 					goto END
+				case <-info.CancelCtx.Done():
+					result.Type = common.ResKilled
+					goto END
 				}
 			}
 

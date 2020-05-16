@@ -24,7 +24,7 @@ func init() {
 			beego.NSRouter("/log/:name", &controllers.JobController{}, "get:Log"),
 		),
 		beego.NSNamespace("/worker",
-			beego.NSRouter("/list", &controllers.JobController{}, "get:List"),
+			beego.NSRouter("/list", &controllers.WorkerController{}, "get:List"),
 		),
 	)
 	beego.AddNamespace(ns)

@@ -240,7 +240,7 @@
             killJob(row) {
                 //  console.log(row.name)
                 axios.post('/v1/job/kill', {
-                    name: row.name
+                    id: row.id
                 }).then(res => {
                     if (res.data.code == 0) {
                         this.$message({

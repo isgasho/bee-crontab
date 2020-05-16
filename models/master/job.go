@@ -149,9 +149,9 @@ func (jobMgr *JobMgr) ListJobs() (jobs []*common.Job, err error) {
 func (jobMgr *JobMgr) KillJob(job *common.Job) (err error) {
 
 	var (
-		killJobKey = common.JobKillerPath + job.Name
 		leaseID    clientv3.LeaseID
 		grantResp  *clientv3.LeaseGrantResponse
+		killJobKey = getKillerKey(job.ID)
 	)
 
 	// 申请一个租约 设置对应的过期时间
@@ -165,11 +165,17 @@ func (jobMgr *JobMgr) KillJob(job *common.Job) (err error) {
 	if _, err = jobMgr.kv.Put(context.TODO(), killJobKey, "kill", clientv3.WithLease(leaseID)); err != nil {
 		return
 	}
+	log.Info("job id", job.ID, "is be killed")
 
 	return
 }
 
-//
+// 获取任务存储key
 func getJobKey(id string) string {
 	return common.JobSavePath + id
+}
+
+// 获取要中止任务的key
+func getKillerKey(id string) string {
+	return common.JobKillerPath + id
 }
