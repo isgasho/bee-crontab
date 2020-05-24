@@ -155,7 +155,7 @@ func (jobMgr *JobMgr) KillJob(job *common.Job) (err error) {
 	)
 
 	// 申请一个租约 设置对应的过期时间
-	if grantResp, err = jobMgr.lease.Grant(context.TODO(), 2); err != nil {
+	if grantResp, err = jobMgr.lease.Grant(context.TODO(), 1); err != nil {
 		return
 	}
 

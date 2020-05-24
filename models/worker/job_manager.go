@@ -103,7 +103,7 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 			//TODO:构造事件 发送给调度器
 			jobEvent = common.NewJobEvent(common.JobEventSave, job)
 			BeeScheduler.PushJobEvent(jobEvent)
-			log.Infof("send job event :%+v\n", jobEvent)
+			// log.Infof("send job event :%+v\n", jobEvent)
 		}
 	}
 
@@ -125,16 +125,16 @@ func (jobMgr *JobManager) WatchJobs() (err error) {
 					jobEvent = common.NewJobEvent(common.JobEventSave, job)
 					//  传给调度器
 					BeeScheduler.PushJobEvent(jobEvent)
-					log.Infof("send job event :%+v\n", jobEvent)
+					log.Infof("send put job event :%+v\n", jobEvent)
 				case mvccpb.DELETE:
 					// 任务删除事件
 					jobID = common.ExtractJobID(string(watchEvent.Kv.Key))
-					job = &common.Job{Name: jobID}
+					job = &common.Job{ID: jobID}
 					// 构造一个任务删除事件
 					jobEvent = common.NewJobEvent(common.JobEventDelete, job)
 					// 推送给调度器
 					BeeScheduler.PushJobEvent(jobEvent)
-					log.Infof("send job event :%+v\n", jobEvent)
+					log.Infof("send delete job event :%+v\n", jobEvent)
 				}
 			}
 		}
@@ -178,7 +178,7 @@ func (jobMgr *JobManager) WatchKillers() (err error) {
 					jobEvent = common.NewJobEvent(common.JobEventKill, job)
 					// 事件推送给 schedular
 					BeeScheduler.PushJobEvent(jobEvent)
-					log.Infof("send job event : %v\n", jobEvent)
+					log.Infof("send kill job event : %v\n", jobEvent)
 				case mvccpb.DELETE:
 					// killer 任务过期
 				}

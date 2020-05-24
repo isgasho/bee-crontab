@@ -126,11 +126,11 @@ func (c *JobController) Log() {
 		err  error
 	)
 
-	jobName := c.GetString(":name")
-	log.Info("job_name: ", jobName)
-	if jobName != "" {
-		if logs, err = master.ReadLog(context.TODO(), jobName); err != nil {
-			log.Errorf("read log err job_name:%s err:%w", jobName, err)
+	jobID := c.GetString(":id")
+	log.Info("job_id: ", jobID)
+	if jobID != "" {
+		if logs, err = master.ReadLog(context.TODO(), jobID); err != nil {
+			log.Errorf("read log err job_id:%s err:%v", jobID, err)
 			resp = common.NewResponse(-1, err.Error(), nil)
 		} else {
 			resp = common.NewResponse(0, "success", logs)

@@ -2,6 +2,7 @@ package master
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"sync"
 	"time"
 
@@ -34,7 +35,7 @@ func RecycleLogger(logger *common.Logger) {
 }
 
 // ReadLog 读取任务的执行日志
-func ReadLog(ctx context.Context, jobName string) (logs []*common.HTTPJobLog, err error) {
+func ReadLog(ctx context.Context, jobID string) (logs []*common.HTTPJobLog, err error) {
 
 	var (
 		execLog *common.JobExecLog
@@ -54,9 +55,11 @@ func ReadLog(ctx context.Context, jobName string) (logs []*common.HTTPJobLog, er
 	findOps.SetLimit(20)
 	// 设置过滤器即查找条件
 	filter = &common.JobFilter{
-		jobName,
+		jobID,
 	}
-
+	findOps.SetSort(bson.M{
+		"_id":-1,
+	})
 	if cursor, err = logger.LogCollection.Find(ctx, filter, findOps); err != nil {
 		log.Errorf("find data err", err)
 		return

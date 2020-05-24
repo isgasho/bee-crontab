@@ -21,7 +21,7 @@ func init() {
 			beego.NSRouter("/list", &controllers.JobController{}, "get:List"),
 			beego.NSRouter("/kill", &controllers.JobController{}, "post:Kill"),
 			beego.NSRouter("/delete", &controllers.JobController{}, "post:Delete"),
-			beego.NSRouter("/log/:name", &controllers.JobController{}, "get:Log"),
+			beego.NSRouter("/log/:id", &controllers.JobController{}, "get:Log"),
 		),
 		beego.NSNamespace("/worker",
 			beego.NSRouter("/list", &controllers.WorkerController{}, "get:List"),

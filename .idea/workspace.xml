@@ -2,21 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/models/worker/metrics.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/worker/worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/worker/worker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/conf/app.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/worker.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/worker.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/worker.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/common/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/common/filters.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/filters.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/master/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/master/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/exec.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/exec.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/master/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/log.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/worker/job_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/job_manager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
     </list>
@@ -39,32 +32,18 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="mongo" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="mongo" type="feb32156:DbDataSourceImpl" />
         <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
-        <item name="log: table" type="531e99d1:MongoImplModel$Table" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="mongo" type="feb32156:DbDataSourceImpl" />
         <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
         <item name="log: table" type="531e99d1:MongoImplModel$Table" />
-        <item name="_id: column" type="a4155d2c:MongoImplModel$TableColumn" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
-        <item name="log: table" type="531e99d1:MongoImplModel$Table" />
-        <item name="output: column" type="a4155d2c:MongoImplModel$TableColumn" />
       </path>
     </expand>
     <select />
@@ -78,7 +57,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="/usr/local/Cellar/go/1.14/libexec" />
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.14.2_1/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -117,8 +96,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mongo" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
@@ -126,7 +107,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="go.sdk" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.deploy.options" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -197,6 +178,16 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="" />
+      <created>1589685002117</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589685002117</updated>
+    </task>
+    <servers />
+  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -218,14 +209,16 @@
     <proxy>https://goproxy.cn,direct</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state x="283" y="60" key="#GOROOT" timestamp="1584851708070">
-      <screen x="0" y="0" width="1366" height="768" />
+    <state x="398" y="84" key="#GOROOT" timestamp="1589691984636">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="283" y="60" key="#GOROOT/0.0.1366.768@0.0.1366.768" timestamp="1584851708070" />
-    <state x="138" y="35" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586673518075">
-      <screen x="0" y="0" width="1366" height="768" />
+    <state x="398" y="84" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1589691984636" />
+    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589693015469">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="138" y="35" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1586673518075" />
+    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1589693015469" />
     <state x="164" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog/29.23.1337.745@29.23.1337.745" timestamp="1584865538601" />
     <state width="1324" height="250" key="GridCell.Tab.0.bottom" timestamp="1588680106162">
       <screen x="30" y="23" width="1336" height="745" />
@@ -271,10 +264,16 @@
     </state>
     <state width="1324" height="250" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1588663244957" />
     <state width="1324" height="250" key="GridCell.Tab.1.right/30.23.1336.745@30.23.1336.745" timestamp="1588680106164" />
-    <state x="192" y="23" key="SettingsEditor" timestamp="1584776687320">
-      <screen x="0" y="0" width="1366" height="768" />
+    <state width="234" height="457" key="HiddenNamespacesPopup" timestamp="1589693025145">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="234" height="457" key="HiddenNamespacesPopup/0.0.1920.1080@0.0.1920.1080" timestamp="1589693025145" />
+    <state x="270" y="32" key="SettingsEditor" timestamp="1589695965137">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="192" y="23" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1584776687320" />
+    <state x="270" y="32" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1589695965137" />
+    <state x="270" y="53" key="SettingsEditor/0.23.1920.997@0.23.1920.997" timestamp="1589685103954" />
     <state width="683" height="384" key="XDebugger.FullValuePopup" timestamp="1588663211701">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

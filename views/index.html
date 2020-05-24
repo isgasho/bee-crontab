@@ -86,7 +86,7 @@
                             <el-button class="waves-effect waves-light yellow darken-2 btn-small"
                                        @click="killJob(scope.row)"
                                        type="warning"
-                                       size="small">强杀
+                                       size="small">中止
                             </el-button>
 
                             <el-button class="waves-effect waves-light green lighten-2 btn-small"
@@ -102,7 +102,7 @@
         </template>
     </div>
 
-    <el-dialog title="添加任务" :visible.sync="dialogVisible">
+    <el-dialog title="添加/修改任务" :visible.sync="dialogVisible">
 
         <div class="row">
             <form class="col s12">
@@ -259,7 +259,8 @@
             },
             getLog(row) {
                 this.logVisible = true
-                axios.get("/v1/job/log/" + row.name).then(res => {
+                console.log("row id is",row.id)
+                axios.get("/v1/job/log/" + row.id).then(res => {
                     this.logData = res.data.data
                 })
             },
