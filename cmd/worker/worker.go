@@ -19,7 +19,7 @@ func main() {
 	defer cancel()
 
 	// 初始化配置
-	if err = worker.InitConfig(ctx, "worker.yaml"); err != nil {
+	if err = worker.InitConfig(ctx, "./worker.yaml"); err != nil {
 		goto ERR
 	}
 

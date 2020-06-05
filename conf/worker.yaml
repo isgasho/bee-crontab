@@ -1,6 +1,6 @@
 # etcd config
 etcd_endpoints:
-  - "127.0.0.1:2379"
+  - "192.168.11.22:2379"
 
 etcd_dail_timeout: 5000
 

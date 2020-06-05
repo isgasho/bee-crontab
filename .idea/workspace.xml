@@ -3,15 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="c38b8865-8870-4122-a4dd-01c704049f21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/conf/app.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/worker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/build/worker/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/worker/worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/worker/worker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/worker.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/worker.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/common/filters.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/common/filters.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/master/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/master/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/master/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/worker/job_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/job_manager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/worker/exec.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/worker/exec.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,16 +28,16 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="mongo" type="feb32156:DbDataSourceImpl" />
+        <item name="@192.168.11.22" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="mongo" type="feb32156:DbDataSourceImpl" />
+        <item name="@192.168.11.22" type="feb32156:DbDataSourceImpl" />
         <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="mongo" type="feb32156:DbDataSourceImpl" />
+        <item name="@192.168.11.22" type="feb32156:DbDataSourceImpl" />
         <item name="cron: schema" type="f0f64354:MongoImplModel$Schema" />
         <item name="log: table" type="531e99d1:MongoImplModel$Table" />
       </path>
@@ -214,11 +210,11 @@
     </state>
     <state x="283" y="60" key="#GOROOT/0.0.1366.768@0.0.1366.768" timestamp="1584851708070" />
     <state x="398" y="84" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1589691984636" />
-    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589693015469">
+    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590904634970">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="138" y="35" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1586673518075" />
-    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1589693015469" />
+    <state x="194" y="49" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1590904634970" />
     <state x="164" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog/29.23.1337.745@29.23.1337.745" timestamp="1584865538601" />
     <state width="1324" height="250" key="GridCell.Tab.0.bottom" timestamp="1588680106162">
       <screen x="30" y="23" width="1336" height="745" />
@@ -264,10 +260,10 @@
     </state>
     <state width="1324" height="250" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1588663244957" />
     <state width="1324" height="250" key="GridCell.Tab.1.right/30.23.1336.745@30.23.1336.745" timestamp="1588680106164" />
-    <state width="234" height="457" key="HiddenNamespacesPopup" timestamp="1589693025145">
+    <state width="234" height="457" key="HiddenNamespacesPopup" timestamp="1590904644855">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="234" height="457" key="HiddenNamespacesPopup/0.0.1920.1080@0.0.1920.1080" timestamp="1589693025145" />
+    <state width="234" height="457" key="HiddenNamespacesPopup/0.0.1920.1080@0.0.1920.1080" timestamp="1590904644855" />
     <state x="270" y="32" key="SettingsEditor" timestamp="1589695965137">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -291,16 +287,5 @@
     </state>
     <state x="343" y="71" width="686" height="697" key="search.everywhere.popup/0.0.1366.768@0.0.1366.768" timestamp="1586679607867" />
     <state x="365" y="92" width="670" height="676" key="search.everywhere.popup/30.23.1336.745@30.23.1336.745" timestamp="1584878361032" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/models/worker/config.go</url>
-          <line>38</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

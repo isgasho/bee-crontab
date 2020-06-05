@@ -40,6 +40,7 @@ func init() {
 
 	if client, err = clientv3.New(config); err != nil {
 		beego.Error(err)
+		log.Error(err)
 		return
 	}
 	// 得到kv 和lease

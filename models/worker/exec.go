@@ -50,6 +50,9 @@ func (executor *Executor) ExecuteJob(info *common.JobExecInfo) {
 			timeLimit time.Duration
 		)
 		timeOut, _ := strconv.Atoi(info.Job.TimeOut)
+		if timeOut == 0 {
+			timeOut = 1000 // 默认设置成1000秒
+		}
 		timeLimit = time.Duration(timeOut) * 1000 * time.Millisecond
 		sigStream = make(chan struct{}, 1)
 
